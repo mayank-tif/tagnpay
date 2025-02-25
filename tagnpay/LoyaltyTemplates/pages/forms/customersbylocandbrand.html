@@ -1,0 +1,504 @@
+{% include "header.html" %}
+    <section>
+      {% include "left_section.html" %}
+      <!-- Right Sidebar -->
+
+      <!-- #END# Right Sidebar -->
+    </section>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Customer Details Table -->
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+              <div class="header">
+                <h2>Customer Data</h2>
+                <button class="btn waves-effect btn-success" id="exportData" type="button" id="importbutton" style="float: right;">Export</button>
+              </div>
+              <div class="body">
+                <!-- Filters -->
+                <form id="reportFilterForm" method="post">
+                <div class="row">
+                    {% csrf_token %}
+                  <div class="col-md-3">
+                    <div class="form-group form-float">
+                      <div class="form-line">
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="start_date"
+                          name="start_date"
+                          value="{{start_date|date:'Y-m-d'}}"                        
+                        />
+                        <label class="form-label1">Start Date</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group form-float">
+                      <div class="form-line">
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="end_date"
+                          name="end_date"
+                          value="{{end_date|date:'Y-m-d'}}"
+                        />
+                        <label class="form-label1">End Date</label>
+                      </div>
+                    </div>
+                  </div>
+                  {% comment %}<div class="col-md-3">
+                    <div class="form-group form-float">
+                      <div class="form-line">
+                        <select name="reports" id="reports1" class="form-control">
+                          <option value="">-- Select --</option>
+                          {% for report in reports %}
+                              <option value="{{ report }}" {% if report == selected_report %}selected{% endif %}>
+                                  {{ report }}
+                              </option>
+                          {% endfor %}
+                      </select>
+                       <label class="form-label1">Filters</label>
+                      </div>
+                    </div>
+                  </div>{% endcomment %}
+                  {% comment %}<div class="col-md-3">
+                    <div class="form-group form-float">
+                      <div class="form-line">
+                        <select name="brand" id="brand" class="form-control">
+                          <option value="">-- Select Brand --</option>
+                          {% for brand in brands %}
+                              <option value="{{ brand.id }}" {% if brand.id|stringformat:"s" == selected_brand|stringformat:"s" %}selected{% endif %}>
+                                  {{ brand.rwrd_brand_name }}
+                              </option>
+                          {% endfor %}
+                      </select>
+                        <label class="form-label1">Brand</label>
+                      </div>
+                    </div>
+                  </div>{% endcomment %}
+                  <div class="col-md-3">
+                    <div class="form-group form-float">
+                      <div>
+                        <button type="submit" class="btn btn-primary">Apply Filters</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group form-float">
+                      <div class="form-line">
+                        {% for report in report_types %}
+                        <input
+                          type="radio"
+                          name="report_type"
+                          id="{{ report|slugify }}"
+                          class="with-gap"
+                          value="{{ report }}"
+                          {% if report == selected_report %}
+                          checked
+                          {% endif %}
+                        />
+                        <label for="{{ report|slugify }}" class="m-l-20">{{ report }}</label>
+                        <label class="form-label1">Report Type</label>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </form>
+                <!-- Table -->
+                <div class="table-responsive">
+                  <!--<img src="data:image/png;base64,{{ graph_image_base64 }}" alt="Customer Count Graph" align="center:"right"">-->
+                  <!--<div id="customer_graph"></div>-->
+                  {% comment %} <div>
+                    <h3>Customers by Location (Bar Chart)</h3>
+                    {{ fig_bar|safe }}
+                  </div>
+                  <div>
+                    <h3>Customers by Brand (Pie Chart)</h3>
+                    {{ fig_pie|safe }}
+                  </div>
+                  <div>
+                    <!-- Render the Plotly chart -->
+                    {{ plot_html|safe }}
+                  </div>{% endcomment %}
+                  <div id="plot-container">
+                  <script>
+                      {{ graph|safe }}
+                  </script>
+                  </div>
+                  <table class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th>{{selected_report}}</th>
+                        <th>Total Customers</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Dynamic rows will be appended here by JavaScript -->
+                      {% for lc in customer_data %}
+                      <tr>
+                        <td>{{lc.category }}</td>
+                        <td class="clickable-customer" data-category="{{ lc.category }}">
+                          <u>{{ lc.customer_count }}</u>
+                        </td>
+                      </tr>
+                      {% empty %}
+                      <tr>
+                        <td colspan="9">No data found.</td>
+                      </tr>
+                      {% endfor %}
+                      <tr>
+                        <td colspan="1" align="right"><strong>Total</strong></td>
+                        <td><strong>{{sum_of_tot_cusomers}}</strong></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- #END# Customer Details Table -->
+      </div>
+      <!-- Date Validation Modal -->
+      <div class="modal fade" id="dateValidationModal" tabindex="-1" aria-labelledby="dateValidationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="dateValidationModalLabel">Invalid Date Range</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Start date cannot be greater than the end date. Please select a valid date range.
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="customerDetailsModal" tabindex="-1" aria-labelledby="customerDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <input id="source_category" type="hidden" value="">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="customerDetailsModalLabel">Customer Details</h5>
+                    <div style="float: right; display: flex; gap: 10px;">
+                      <button id="exportCustomerData" class="btn btn-primary">Export</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                <div class="modal-filters d-flex justify-content-center align-items-center gap-2 mb-3 modal-row">
+                  <div class="col-md-3">
+                    <div class="form-group form-float">
+                      <div class="form-line">
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="modal_start_date"                       
+                        />
+                        <label class="form-label1">Start Date</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group form-float">
+                      <div class="form-line">
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="modal_end_date"
+                        />
+                        <label class="form-label1">End Date</label>
+                      </div>
+                    </div>
+                  </div>
+                  <button id="applyDateFilter" class="btn btn-primary">Apply</button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <thead></thead>
+                        <tbody id="customerDetailsBody">
+                            <!-- Data will be inserted dynamically here -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                  <div id="paginationControls" class="d-flex text-center">
+                    <nav>
+                        <ul class="pagination" id="paginationContainer"></ul>
+                    </nav>
+                  </div>
+               </div>
+            </div>
+        </div>
+    </div>        
+    </section>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("reportFilterForm");
+        const startDateInput = document.getElementById("start_date");
+        const endDateInput = document.getElementById("end_date");
+    
+        form.addEventListener("submit", function (event) {
+            const startDate = new Date(startDateInput.value);
+            const endDate = new Date(endDateInput.value);
+    
+            if (startDate && endDate && startDate > endDate) {
+                event.preventDefault(); // Stop form submission
+                $("#dateValidationModal").modal("show");
+            }
+        });
+    });    
+    </script>
+    <script>
+      $(document).ready(function () {
+          $("#exportData").click(function () {
+            showLoader();
+            let start_date = $("#start_date").val();
+            let end_date = $("#end_date").val();
+            let report_type = $("input[name='report_type']:checked").val();
+    
+            // Create a hidden form dynamically
+            let form = $('<form>', {
+                action: "{% url 'analytics:export_customers_data' %}",  
+                method: "POST"
+            });
+    
+            // Add CSRF token
+            form.append('{% csrf_token %}');
+    
+            // Append filter values
+            form.append($('<input>').attr({type: "hidden", name: "start_date", value: start_date}));
+            form.append($('<input>').attr({type: "hidden", name: "end_date", value: end_date}));
+            form.append($('<input>').attr({type: "hidden", name: "report_type", value: report_type}));
+    
+            // Append form to body, submit, and remove it after submission
+            $("body").append(form);
+            form.submit();
+            form.remove();
+            setTimeout(hideLoader, 2000);
+          });
+      });
+    </script>
+    <script>
+     $(document).ready(function () {
+      $("input[name='report_type']").change(function () {
+          $("#reportFilterForm").submit();  // Submit the form on change
+      });
+
+      function updatePagination(currentPage, totalPages, newPageList, hasPrevious, hasNext) {
+        let paginationHtml = '<ul class="pagination">';
+    
+        // First & Previous buttons
+        if (hasPrevious) {
+            paginationHtml += `<li><a href="javascript:void(0);" class="page-btn" data-page="1" aria-label="First"><span aria-hidden="true">First</span></a></li>`;
+            paginationHtml += `<li><a href="javascript:void(0);" class="page-btn" data-page="${currentPage - 1}" aria-label="Previous"><span aria-hidden="true">Previous</span></a></li>`;
+        }
+    
+        // Page number links
+        if (totalPages > 1) {
+            newPageList.forEach(page => {
+                let activeClass = currentPage === page ? "active" : "";
+                paginationHtml += `<li class="${activeClass}"><a href="javascript:void(0);" class="page-btn" data-page="${page}">${page}</a></li>`;
+            });
+        }
+    
+        // Next & Last buttons
+        if (hasNext) {
+            paginationHtml += `<li><a href="javascript:void(0);" class="page-btn" data-page="${currentPage + 1}" aria-label="Next"><span aria-hidden="true">Next</span></a></li>`;
+            paginationHtml += `<li><a href="javascript:void(0);" class="page-btn" data-page="${totalPages}" aria-label="Last"><span aria-hidden="true">Last</span></a></li>`;
+        }
+    
+        paginationHtml += '</ul>';
+        $("#paginationControls").html(paginationHtml);
+      }
+
+      // Handle click event for pagination buttons
+      $(document).on("click", ".page-btn", function () {
+        let newPage = $(this).data("page");
+        let startDate = $("#modal_start_date").val();
+        let endDate = $("#modal_end_date").val();
+        fetchCustomerData(startDate, endDate, newPage);
+      });
+
+      let currentPage = 1;
+
+      // Function to fetch customer data with pagination
+      function fetchCustomerData(startDate, endDate, page) {
+        let csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+        let reportType = $("input[name='report_type']:checked").val();
+        let category = $("#source_category").val();
+        // Convert start and end dates to Date objects
+        let start = new Date(startDate);
+        let end = new Date(endDate);
+          
+        // Validate if start date is greater than end date
+        if (start && end && start > end) {
+            $("#dateValidationModal").modal("show"); // Show Bootstrap modal
+            return; // Stop further execution
+        }
+        showLoader();
+        $.ajax({
+            url: "{% url 'analytics:fetch_customer_details' %}",  
+            type: "POST",
+            data: {
+                category: category,
+                report_type: reportType,
+                start_date: startDate,
+                end_date: endDate,
+                page: page,
+                csrfmiddlewaretoken: csrfToken
+            },
+            success: function (response) {
+                let tbody = $("#customerDetailsBody");
+                tbody.empty();
+                var pageSize = 50;
+            
+                if (response.data.length === 0) {
+                    tbody.append("<tr><td colspan='5' class='text-center'>No customers found</td></tr>");
+                    $("#prevPage, #nextPage").prop("disabled", true);
+                } else {
+                  let thead = $("#customerDetailsBody").closest("table").find("thead");
+                  tbody.empty();
+                  // Define base columns
+                  let baseColumns = [
+                      { key: "firstname", label: "Name" },
+                      { key: "email", label: "Email" },
+                      { key: "mobileno", label: "Phone" },
+                      { key: "gender", label: "Gender" },
+                      { key: "created_on", label: "Date of Joining" }
+                  ];
+                  // Define additional columns based on report type
+                  let extraColumns = {
+                      "Location": [{ key: "location_name", label: "Location" }],
+                      "City": [{ key: "city", label: "City" }],
+                      "State": [{ key: "state", label: "State" }],
+                      "Zone": [{ key: "location_zone", label: "Zone" }],
+                      "Tier": [{ key: "tier", label: "Tier" }]
+                  };
+                
+                  // Combine base + report-specific columns
+                  let finalColumns = [...baseColumns, ...(extraColumns[reportType] || [])];
+                
+                  // Dynamically update table headers
+                  let headerHtml = "<tr><th>S.No</th>";
+                  finalColumns.forEach(col => {
+                      headerHtml += `<th>${col.label}</th>`;
+                  });
+                  headerHtml += "</tr>";
+                  thead.html(headerHtml);
+                  $.each(response.data, function (index, customer) {
+                    let serialNo = (page - 1) * pageSize + index + 1; // Calculate serial number
+                    let createdOn = customer.created_on 
+                        ? new Date(customer.created_on).toLocaleString('en-GB', { 
+                            day: '2-digit', month: 'short', year: 'numeric', 
+                            hour: '2-digit', minute: '2-digit', hour12: false 
+                        }) 
+                        : 'N/A';
+
+                    let rowHtml = `<tr><td>${serialNo}</td>`;
+                    finalColumns.forEach(col => {
+                        rowHtml += `<td>${col.key === 'created_on' ? createdOn : (customer[col.key] || '')}</td>`;;
+                    });
+                    rowHtml += `</tr>`;
+                    tbody.append(rowHtml);
+                    });
+                
+                  updatePagination(response.page_no, response.totalpage, response.newpagelist, response.has_previous, response.has_next);
+                  currentPage = response.page_no;
+                  $("#customerDetailsModal").modal("show");
+                }
+            },
+            error: function () {
+                alert("Failed to fetch data.");
+            }
+        });
+        setTimeout(hideLoader, 500);
+      }
+
+      // Open modal and fetch data when customer count is clicked
+      $(".clickable-customer").click(function () {
+          let startDate = $("#start_date").val();
+          let endDate = $("#end_date").val();
+          let category = $(this).data("category");
+
+          // Set modal filters initially from outer filters
+          $("#modal_start_date").val(startDate);
+          $("#modal_end_date").val(endDate);
+          $("#customerDetailsModal").find("#source_category").val(category);
+
+          currentPage = 1;  // Reset to page 1 on new selection
+          fetchCustomerData(startDate, endDate, currentPage);
+      });
+
+      // Apply button inside modal to update date filters and fetch data
+      $("#applyDateFilter").click(function () {
+          let startDate = $("#modal_start_date").val();
+          let endDate = $("#modal_end_date").val();
+          currentPage = 1; // Reset to first page
+          fetchCustomerData(startDate, endDate, currentPage);
+      });
+
+      // Export Data Button
+      $("#exportCustomerData").click(function () {
+        let category = $("#customerDetailsModal").find("#source_category").val();
+        let reportType = $("input[name='report_type']:checked").val();
+        let startDate = $("#customerDetailsModal").find("#modal_start_date").val();
+        let endDate = $("#customerDetailsModal").find("#modal_end_date").val();
+        let csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+
+        let queryParams = $.param({
+            category: category,
+            report_type: reportType,
+            start_date: startDate,
+            end_date: endDate,
+            csrfmiddlewaretoken: csrfToken,
+            page: currentPage,
+        });
+        showLoader();
+        window.location.href = "{% url 'analytics:export_customer_details' %}?" + queryParams;
+        hideLoader();
+      });
+     });
+    </script>
+
+    <!-- Jquery Core Js -->
+    <script src="/static/plugins/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core Js -->
+    <script src="/static/plugins/bootstrap/js/bootstrap.js"></script>
+
+    {% comment %} <!-- Select Plugin Js -->
+    <script src="/static/plugins/bootstrap-select/js/bootstrap-select.js"></script> {% endcomment %}
+
+    <!-- Slimscroll Plugin Js -->
+    <script src="/static/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+    <!-- Jquery Validation Plugin Css -->
+    <script src="/static/plugins/jquery-validation/jquery.validate.js"></script>
+
+    <!-- JQuery Steps Plugin Js -->
+    <script src="/static/plugins/jquery-steps/jquery.steps.js"></script>
+
+    <!-- Sweet Alert Plugin Js -->
+    <script src="/static/plugins/sweetalert/sweetalert.min.js"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="/static/plugins/node-waves/waves.js"></script>
+
+    <!-- Custom Js -->
+    <script src="/static/js/admin.js"></script>
+    <script src="/static/js/pages/forms/analytics/form-validation.js"></script>
+
+    <!-- Demo Js -->
+    <script src="/static/js/demo.js"></script>
+  </body>
+</html>

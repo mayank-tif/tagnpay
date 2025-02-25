@@ -1,0 +1,163 @@
+{% include "header.html" %}
+
+    <section>
+
+      {% include "left_section.html" %}
+
+      <!-- #END# Right Sidebar -->
+    </section>
+
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Basic Validation -->
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+              <div class="header">
+                <h2>Progam Setup</h2>
+              </div>
+              <div align="center" height="50px;"><h6><font color="#FF0000">{{ message }}</font></h6></div>
+              <div class="body">
+                <form id="form_validation" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="program_name"
+                            value="{{Progsettings.header_name}}"
+                            required
+                          />
+                          <label class="form-label">Program Name</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="mall_name"
+                            value="{{Progsettings.brand_name}}"
+                            required
+                          />
+                          <label class="form-label">Mall Name</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="program_name_sms"
+                            value="{{Progsettings.brand_sms}}"
+                            required
+                            />
+                          <label class="form-label">Program Name (in SMS)</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="program_url"
+                            value="{{Progsettings.brand_url}}"
+                            required
+                          />
+                          <label class="form-label">Program URL</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="senderid"
+                            value="{{Progsettings.sender_id}}"
+                            required
+                            maxlength=6
+                            minlength=4
+                          />
+                          <label class="form-label">Sender Id</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="file"
+                            class="form-control"
+                            name="program_logo"
+                            value="{{ Progsettings.logo_img_name }}"
+                            />
+                          <label class="form-label1">Program Logo</label>
+                          
+                        </div>
+                        {% if Progsettings.logo_img_name %}
+                          <img src="/{{ Progsettings.logo_img_name }}" alt="Logo" width="100">
+                          {% endif %}
+                      </div>
+                    </div>
+                    
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="radio"
+                            name="earnlogic"
+                            id="percentpoints"
+                            class="with-gap"
+                            value="Percent Points"
+                            {% if Progsettings.earn_points_logic == "Percent Points" %}
+                            checked
+                            {% endif %}
+                          />
+                          <label for="percentpoints">Percent Points</label>
+                          <input
+                            type="radio"
+                            name="earnlogic"
+                            id="pointsperspend"
+                            class="with-gap"
+                            value="Points Per Spend"
+                            {% if Progsettings.earn_points_logic == "Points Per Spend" %}
+                            checked
+                            {% endif %}
+                          />
+                          <label for="pointsperspend" class="m-l-20">Points Per Spend</label>
+                          <label class="form-label1">Earn Logic</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="btn btn-primary waves-effect" type="submit" id="submitBtn">
+                    SUBMIT
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- #END# Basic Validation -->
+      </div>
+    </section>
+
+   
+    {% include "footer.html" %}

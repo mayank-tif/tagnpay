@@ -1,0 +1,133 @@
+from django.urls import path
+from .views import *
+
+app_name = "analytics"  # Define app_name here for namespacing
+
+urlpatterns = [
+    path(
+        "CustomerDataReport/",
+        View_LoyaltyCustomerData.as_view(),
+        name="CustomerDataReport",
+    ),
+    path("CustomersByLocation/", View_CustomersData, name="CustomersByLocation"),
+    path(
+        "TransactionSummary/",
+        View_TransactionSummary.as_view(),
+        name="TransactionSummary",
+    ),
+    path(
+        "export-transaction-data/",
+        ExportTransactionSummary.as_view(),
+        name="export_transaction_summary_data",
+    ),
+    path(
+        "get-customer-transaction-details-data/",
+        FetchCustomerTransactionsSummaryDetails.as_view(),
+        name="customer_transaction_details",
+    ),
+    path(
+        "customer-earn-burn-details/",
+        CustomerEarnBurnDetailsView.as_view(),
+        name="CustomerEarnBurnDetails",
+    ),
+    path(
+        "export-customer-earn-burn-details/",
+        ExportCustomerEarnBurnDetailsView.as_view(),
+        name="ExportCustomerEarnBurnDetails",
+    ),
+    path(
+        "export-customer-transaction-details-data/",
+        ExportCustomerTransactionsSummaryDetails.as_view(),
+        name="export_customer_transaction_details",
+    ),
+    path(
+        "TransactionData/",
+        View_TransactionData.as_view(),
+        name="TransactionData",
+    ),
+    path(
+        "RepeatTransbyLocSummary/",
+        View_RepeatTransbyLocSummary.as_view(),
+        name="RepeatTransbyLocSummary",
+    ),
+    path(
+        "get-repeat-transactions-total-data/",
+        GetRepeatTransactionsSummaryData.as_view(),
+        name="GetRepeatTransactionsSummaryData",
+    ),
+    path(
+        "ExportRepeatTransbyLocSummary/",
+        ExportRepeatTransSummary.as_view(),
+        name="ExportRepeatTransbyLocSummary",
+    ),
+    path(
+        "fetch-customer-repeat-transactions/",
+        GetCustomerRepeatTransDetail.as_view(),
+        name="CustomerRepeatTransactionDetailData",
+    ),
+    path("export-repeat-trans-details/", ExportRepeatTransactionsDetails.as_view(), name="export_repeat_trans_details"),
+    path(
+        "EarnBurnSummary/",
+        EarnBurnSummaryView.as_view(),
+        name="EarnBurnSummary",
+    ),
+    path(
+        "earn-burn-summary-export/",
+        EarnBurnSummaryExportView.as_view(),
+        name="earn_burn_summary_export",
+    ),
+    path("CampaignROI/", CampaignROIView.as_view(), name="CampaignROI"),
+    path(
+        "export-customers-data/",
+        ExportCustomerData,
+        name="export_customers_data",
+    ),
+    path(
+        "fetch_customer_details/",
+        fetch_customer_details,
+        name="fetch_customer_details",
+    ),
+    path(
+        "export_customer_details/",
+        export_customer_details,
+        name="export_customer_details",
+    ),
+    path(
+        "repeat-customers-data/",
+        RepeatCustomersGraphView.as_view(),
+        name="RepeatCustomersReport",
+    ),
+    path(
+        "export-repeat-customers/",
+        ExportRepeatCustomersView.as_view(),
+        name="ExportRepeatCustomers",
+    ),
+    path(
+        "repeat-customer-details",
+        RepeatCustomerDetailView.as_view(),
+        name="RepeatCustomerDetail",
+    ),
+    path(
+        "export-repeat-customer-details",
+        ExportRepeatCustomerDetailsView.as_view(),
+        name="ExportRepeatCustomerDetail",
+    ),
+    path("top-customers/", TopCustomersGraphView.as_view(), name="TopCustomers"),
+    path(
+        "live-monitor/",
+        LiveMonitorView.as_view(),
+        name="Viewlivemonitor",
+    ),
+    path(
+        "live-monitor-total-data/",
+        get_live_monitor_total_Data,
+        name="GetLiveMonitorTotalData",
+    ),
+    path(
+        "live-monitor-table-data/",
+        get_live_monitor_table_data,
+        name="GetLiveMonitorTableData",
+    ),
+    path("get-locations-by-zone/", get_locations_by_zone, name="GetLocationsByZone"),
+    
+]

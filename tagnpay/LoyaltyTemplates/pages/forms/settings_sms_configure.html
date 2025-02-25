@@ -1,0 +1,678 @@
+﻿{% include "header.html" %}
+  <section>
+    <!-- Left Sidebar -->
+    {% include "left_section.html" %}
+      <!-- #END# Left Sidebar -->
+    </section>
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Basic Validation -->
+        <div class="row clearfix" id="form_container" style="display: none">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+              <div class="header">
+                <h2>Add Template</h2>
+              </div>
+              <div class="body">
+                <form name="frmaddtemplate" id="frmaddtemplate" method="POST" action="{% url 'AddTemplate' %}">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <select id="seltemplatetype" name="seltemplatetype" class="form-control" required oninvalid="this.setCustomValidity('Please select template type')" 
+                          oninput="this.setCustomValidity('')">
+                            <option value="">-- Select Template Type --</option>
+                            {% for templatetype in templatetypes %}
+                            <option value="{{ templatetype.template_type }}">{{ templatetype.template_type }}</option>
+                            {% endfor %}
+                          </select>
+                          <label class="form-label1">Select Template Type</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <select name="seltemplatecat" id="seltemplatecat" class="form-control" required oninvalid="this.setCustomValidity('Please select template category')" 
+    oninput="this.setCustomValidity('')">
+                          <option value="">-- Select Template Category --</option>
+                            {% for templatecat in templatecategories %}
+                                <option value="{{ templatecat.template_category }}" {% if templatecat.template_category|stringformat:"s" == selected_brand|stringformat:"s" %}selected{% endif %}>
+                                    {{ templatecat.template_category }}
+                                </option>
+                            {% endfor %}
+                          </select>
+                          <label class="form-label1">Template Category</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <select id="seltemplateflag" name="seltemplateflag" class="form-control" required oninvalid="this.setCustomValidity('Please select template flag')" 
+                          oninput="this.setCustomValidity('')">
+                            <option value="">-- Select Template Flag --</option>
+                            {% for templateflag in templateflags %}
+                            <option value="{{ templateflag.id }}">{{ templateflag.template_flag }}</option>
+                            {% endfor %}
+                          </select>
+                          <label class="form-label1">Select Template Flag</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                          type="text"
+                          id="templateid"
+                          class="form-control"
+                          name="templateid"
+                          required
+                        />
+                        <label class="form-label">Enter Template Id</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+
+                  <div class="row">  
+
+                    <div class="col-md-12">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <textarea rows="4"
+                          id="templatetext"
+                          class="form-control"
+                          name="templatetext"
+                          required
+                          ></textarea>
+                        <label class="form-label">Enter Template</label>
+                        </div>
+                        
+                        <div align="right"><b><span style="padding: 5px 5px 5px 5px; text-align: center; color: #aa78ff; border: 1px solid #aa78ff;" id="character-count">0</span> characters</b></div>
+                        <div style="padding:5px;"><p>[$mob$] [$epts$] [$Blpts$] [$rdpts$] [$vrfyotp$]</p></div>
+                      </div>
+                    </div>
+                 </div>
+                 <button class="btn btn-primary waves-effect" type="submit" style="margin: 20px;">SUBMIT</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category Table -->
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+              <div class="header">
+                <h2>SMS Configure</h2>
+                <p>Messages are subjected to whitelist from TRAI end</p>
+                <button
+                  class="btn btn-primary waves-effect"
+                  type="button"
+                  style="float: right; margin-left: 10px"
+                  onclick="toggleForm()"
+                >
+                  Add Template
+                </button>
+                {% if messages %}
+                {% for message in messages %}
+                <div align="center" height="50px;"><h6><font color="#ff0000" class="{{ message.tags }}">{{ message }}</font></h6></div>
+                {% endfor %}
+                {% elif request.GET.msg == "deleted" %}
+                <div align="center" height="50px;"><h6><font color="#ff0000">Template deleted successfully</font></h6></div>
+                {% endif %}
+                <input
+                  type="file"
+                  id="import_files"
+                  style="display: none"
+                  accept=".csv, .xlsx"
+                  onchange="handleFileUpload(event)"
+                />
+              </div>
+              <div class="body">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th>Template Name</th>
+                        <th>Template Type</th>
+                        <th>Template Category</th>
+                        <th>Template</th>
+                        <th>Edit</th>
+                        <th>Deactivate</th>
+                      </tr>
+                    </thead>
+                    <tbody id="templateTableBody">
+                      <!-- Dynamic rows will be appended here by JavaScript -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      function toggleForm() {
+        const formContainer = document.getElementById("form_container");
+        if (formContainer.style.display === "none") {
+          formContainer.style.display = "block";
+        } else {
+          formContainer.style.display = "none";
+        }
+      }
+
+      /*document
+        .getElementById("category_image")
+        .addEventListener("change", function (event) {
+          const imagePreview = document.getElementById("image_preview");
+          const file = event.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              imagePreview.src = e.target.result;
+              imagePreview.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+          } else {
+            imagePreview.src = "";
+            imagePreview.style.display = "none";
+          }
+        });*/
+
+      function handleFileUpload(event) {
+        const file = event.target.files[0];
+        if (file) {
+          // Implement file processing here
+          console.log("Selected file:", file.name);
+        }
+      }
+    </script>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="TemplateModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="categoryModalLabel"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div style="
+          background: #aa78ff;
+          margin: 40px 0px;
+          color: #fff;
+      " class="modal-header">
+            <h4 class="modal-title" id="categoryModalLabel">
+              Edit/View Template
+            </h4>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Form content from above -->
+            <form id="modal_frmaddtemplate" name="modal_frmaddtemplate" method="POST" action="{% url 'EditTemplate' %}">
+              {% csrf_token %}
+              <input type="hidden" name="modal_tmplt_id" id="modal_tmplt_id" />
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group form-float">
+                    <div class="form-line">
+                      <select id="modal_template_type" name="modal_template_type" class="form-control" required oninvalid="this.setCustomValidity('Please select template type')" 
+                          oninput="this.setCustomValidity('')">
+                            <option value="">-- Select Template Type --</option>
+                            {% for templatetype in templatetypes %}
+                            <option value="{{ templatetype.template_type }}">{{ templatetype.template_type }}</option>
+                            {% endfor %}
+                          </select>
+                          <label style=" top: -20px; " class="form-label">Select Template Type</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group form-float">
+                    <div class="form-line">
+                      <select name="modal_template_category" id="modal_template_category" class="form-control" required oninvalid="this.setCustomValidity('Please select template category')" 
+    oninput="this.setCustomValidity('')">
+                          <option value="">-- Select Template Category --</option>
+                            {% for templatecat in templatecategories %}
+                                <option value="{{ templatecat.template_category }}" {% if templatecat.template_category|stringformat:"s" == selected_brand|stringformat:"s" %}selected{% endif %}>
+                                    {{ templatecat.template_category }}
+                                </option>
+                            {% endfor %}
+                          </select>
+                          <label style=" top: -20px; " class="form-label">Template Category</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group form-float">
+                    <div class="form-line">
+                      <select id="modal_template_flag" name="modal_template_flag" class="form-control" required oninvalid="this.setCustomValidity('Please select template flag')" 
+                      oninput="this.setCustomValidity('')">
+                        <option value="">-- Select Template Flag --</option>
+                        {% for templateflag in templateflags %}
+                        <option value="{{ templateflag.id }}"  {% if templateflag.id|stringformat:"s" == selected_templateflagid|stringformat:"s" %}selected{% endif %}>{{ templateflag.template_flag_description }}</option>
+                        {% endfor %}
+                      </select>
+                      <label style=" top: -20px; " class="form-label">Select Template Flag</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group form-float">
+                    <div class="form-line">
+                      <input
+                      type="text"
+                      id="modal_templateid"
+                      class="form-control"
+                      name="modal_templateid"
+                      required
+                    />
+                    <label style=" top: -20px; " class="form-label">Enter Template Id</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">  
+
+                <div class="col-md-12">
+                  <div class="form-group form-float">
+                    <div class="form-line">
+                      
+                      <textarea rows="4"
+                          id="modal_templatetext"
+                          class="form-control"
+                          name="modal_templatetext"
+                          required
+                          ></textarea>
+                      <label style=" top: -20px; " class="form-label">Enter Template</label>
+                    
+                    </div>
+                    
+                    <div align="right"><b><span style="padding: 5px 5px 5px 5px; text-align: center; color: #aa78ff; border: 1px solid #aa78ff;" id="character-count1">0</span> characters</b></div>
+                    <div style="padding:5px;"><p>[$mob$] [$epts$] [$Blpts$] [$rdpts$] [$vrfyotp$]</p></div>
+                  </div>
+                </div>
+             </div>              
+             <button class="btn btn-primary waves-effect" type="submit">SUBMIT</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Example data for the table
+      const categories = [
+        {
+          name: "Facebook",
+          description: "Description 1",
+          template: "this is first template",
+        },
+        {
+          name: "Microsoft",
+          description: "Description 2",
+          template: "this is second template",
+        },
+        {
+          name: "QrCode",
+          description: "Description 3",
+          template: "this is Third template",
+        },
+      ];
+
+      const tmplt_json_data = JSON.parse('{{ templatesdata|safe|escapejs }}');  // Use safe filter to avoid HTML escaping
+      const tmpltes = tmplt_json_data;
+
+
+      // Function to populate the category table
+      function populateTemplateTable() {
+        const tableBody = document.getElementById("templateTableBody");
+        tableBody.innerHTML = "";
+
+        tmpltes.forEach((template, index) => {
+          const row = document.createElement("tr");
+
+          row.innerHTML = `
+        <td>${template.template_name}</td>
+        <td>${template.template_flag_id__template_type}</td>
+        <td>${template.template_flag_id__template_category}</td>
+        <td>${template.template_text}</td>
+        <td>
+  <button type="button" class="btn btn-primary" onclick="EditTemplate(${index}, 'edit', ${template.id})">
+    <i class="fas fa-edit fa-xs"></i>
+  </button>
+</td>
+<td>
+  <button type="button" class="btn btn-danger" onclick="deleteTemplate(${index}, ${template.id})">
+    <i class="fas fa-trash-alt fa-xs"></i>
+  </button>
+</td>
+
+
+
+      `;
+
+          tableBody.appendChild(row);
+        });
+      }
+
+      // Function to open the modal with category details
+      // Function to open the modal with category details
+      function EditTemplate(index, mode, templateid) {
+        const tmplt = tmpltes[index];
+
+        fetch(`{% url 'GetTemplateDtls' %}`, {
+          method: "POST",
+          headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+          body: JSON.stringify({ "templateid": templateid })
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Populate form with tier data
+          //alert(data.rwrd_brand_name);
+          //alert(data.template_flag_id);
+          
+          document.getElementById("modal_tmplt_id").value = data.id;
+          document.getElementById("modal_template_type").value = data.template_type;
+          document.getElementById("modal_template_category").value = data.template_category;
+          document.getElementById("modal_template_flag").value = data.template_flag_id;
+          document.getElementById("modal_templateid").value = data.template_id;
+          document.getElementById("modal_templatetext").value = data.template_text;
+          
+          //document.getElementById("modal_tabKey").value = tabKey;
+          //document.getElementById("modal_index").value = tierid;
+        })
+        .catch(error => console.error("Error fetching template data:", error));
+
+        /*if (mode === "view") {
+          document.querySelector(
+            '[name="modal_brand_name"]'
+          ).readOnly = true;
+          document.querySelector(
+            '[name="modal_brand_description"]'
+          ).readOnly = true;
+          document.querySelector(
+            '[name="modal_category_image"]'
+          ).style.display = "none";
+          document.querySelector(".form-actions").style.display = "none";
+        } else {
+          document.querySelector(
+            '[name="modal_brand_name"]'
+          ).readOnly = false;
+          document.querySelector(
+            '[name="modal_brand_description"]'
+          ).readOnly = false;
+          document.querySelector(
+            '[name="modal_category_image"]'
+          ).style.display = "block";
+          document.querySelector(".form-actions").style.display = "block";
+        }*/
+
+        $("#TemplateModal").modal("show");
+      }
+      {% comment %} function openModal(index, mode) {
+        const category = categories[index];
+
+        document.querySelector('[name="modal_category_name"]').value =
+          category.name;
+        document.querySelector('[name="modal_category_description"]').value =
+          category.description;
+          document.querySelector('[name="modal_category_template"]').value =
+          category.template;
+        // document.getElementById("modal_image_preview").src = category.template;
+        document.getElementById("modal_image_preview").style.display = "block";
+
+        if (mode === "view") {
+          document.querySelector(
+            '[name="modal_category_name"]'
+          ).readOnly = true;
+          document.querySelector(
+            '[name="modal_category_description"]'
+          ).readOnly = true;
+          document.querySelector(
+            '[name="modal_category_image"]'
+          ).style.display = "none";
+          document.querySelector(".form-actions").style.display = "none";
+        } else {
+          document.querySelector(
+            '[name="modal_category_name"]'
+          ).readOnly = false;
+          document.querySelector(
+            '[name="modal_category_description"]'
+          ).readOnly = false;
+          document.querySelector(
+            '[name="modal_category_image"]'
+          ).style.display = "block";
+          document.querySelector(".form-actions").style.display = "block";
+        }
+
+        $("#categoryModal").modal("show");
+      } {% endcomment %}
+
+      // Function to delete a category
+      function deleteTemplate(index,templateid) {
+        //categories.splice(index, 1);
+        //populateTemplateTable();
+        if (confirm("Are you sure you want to delete this Template?")) {
+          $.ajax({
+            url: `{% url 'DelTemplate' %}`,  // Endpoint to delete item
+            type: 'POST',
+            headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+            data: {"templateid": templateid },
+            success: function(response) {
+                window.location.href = "/settings/smsconfig/?msg=deleted";
+            }
+        });
+        }
+      }
+      
+
+      // Call the function to populate the table on page load
+      populateTemplateTable();
+
+      //
+// Variables
+//
+
+// Get the #text element
+const textArea = document.querySelector('#templatetext');
+
+// Get the #character-count element
+const characterCount = document.querySelector('#character-count');
+
+const textArea1 = document.querySelector('#modal_templatetext');
+
+// Get the #character-count element
+const characterCount1 = document.querySelector('#character-count1');
+
+
+//
+// Functions
+//
+
+/**
+ * Get the number of characters inside a form field
+ * @param {HTMLInputElement|HTMLTextAreaElement} field The form field
+ * @returns {Number} The character count
+ */
+function getCharacterCount (field) {
+  return field.value.length;
+}
+
+/**
+ * Handle input events
+ */
+function handleInput () {
+  characterCount.textContent = getCharacterCount(this);
+}
+
+function handleInput1 () {
+  characterCount1.textContent = getCharacterCount(this);
+}
+
+
+//
+// Inits & Event Listeners
+//
+
+// Handle input events
+textArea.addEventListener('input', handleInput);
+textArea1.addEventListener('input', handleInput1);
+
+    $(document).ready(function () {
+      // Handle category selection
+      $('#seltemplatetype').change(function () {
+          const templatetype = $(this).val();
+          const templatecat = $('#seltemplatecat');
+
+          // Clear the current brand options
+          templatecat.empty().append('<option value="">Select Template Category</option>');
+
+          if (templatecat) {
+              $.ajax({
+                  url: "{% url 'GetTemplateCategoryByType' %}",
+                  method: "POST",
+                  headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                  data: {
+                      'template_type': templatetype
+                    },
+                  success: function (data) {
+                      data.forEach(function (tmpltcat) {
+                        templatecat.append(`<option value="${tmpltcat.template_category}">${tmpltcat.template_category}</option>`);
+                      });
+                  },
+                  error: function (xhr, status, error) {
+                      console.error('Error fetching template categories:', error);
+                      alert('Failed to load template categories. Please try again.');
+                  }
+              });
+          }
+      });
+    });
+
+
+    $(document).ready(function () {
+      // Handle category selection
+      $('#seltemplatecat').change(function () {
+          const templatecat = $(this).val();
+          const templatetype = $('#seltemplatetype').val();
+          const templateflag = $('#seltemplateflag');
+          //alert(templatetype);
+          // Clear the current brand options
+          templateflag.empty().append('<option value="">Select Template Flag</option>');
+
+          if (templateflag) {
+              $.ajax({
+                  url: "{% url 'GetTemplateFlagByTypeCat' %}",
+                  method: "POST",
+                  headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                  data: {
+                      'template_type': templatetype,
+                      'template_cat': templatecat
+                    },
+                  success: function (data) {
+                      data.forEach(function (tmpltflag) {
+                        templateflag.append(`<option value="${tmpltflag.id}">${tmpltflag.template_flag_description}</option>`);
+                      });
+                  },
+                  error: function (xhr, status, error) {
+                      console.error('Error fetching template flags:', error);
+                      alert('Failed to load template flags. Please try again.');
+                  }
+              });
+          }
+      });
+    });
+
+    $(document).ready(function () {
+      // Handle category selection
+      $('#modal_template_type').change(function () {
+          const templatetype = $(this).val();
+          const templatecat = $('#modal_template_category');
+
+          // Clear the current brand options
+          templatecat.empty().append('<option value="">Select Template Category</option>');
+
+          if (templatecat) {
+              $.ajax({
+                  url: "{% url 'GetTemplateCategoryByType' %}",
+                  method: "POST",
+                  headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                  data: {
+                      'template_type': templatetype
+                    },
+                  success: function (data) {
+                      data.forEach(function (tmpltcat) {
+                        templatecat.append(`<option value="${tmpltcat.template_category}">${tmpltcat.template_category}</option>`);
+                      });
+                  },
+                  error: function (xhr, status, error) {
+                      console.error('Error fetching template categories:', error);
+                      alert('Failed to load template categories. Please try again.');
+                  }
+              });
+          }
+      });
+    });
+
+
+    $(document).ready(function () {
+      // Handle category selection
+      $('#modal_template_category').change(function () {
+          const templatecat = $(this).val();
+          const templatetype = $('#modal_template_type').val();
+          const templateflag = $('#modal_template_flag');
+          //alert(templatetype);
+          //alert(templatecat);
+          // Clear the current brand options
+          templateflag.empty().append('<option value="">Select Template Flag</option>');
+
+          if (templateflag) {
+              $.ajax({
+                  url: "{% url 'GetTemplateFlagByTypeCat' %}",
+                  method: "POST",
+                  headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                  data: {
+                      'template_type': templatetype,
+                      'template_cat': templatecat
+                    },
+                  success: function (data) {
+                      data.forEach(function (tmpltflag) {
+                        templateflag.append(`<option value="${tmpltflag.id}">${tmpltflag.template_flag_description}</option>`);
+                      });
+                  },
+                  error: function (xhr, status, error) {
+                      console.error('Error fetching template flags:', error);
+                      alert('Failed to load template flags. Please try again.');
+                  }
+              });
+          }
+      });
+    });
+
+
+
+    </script>
+
+    {% include "footer.html" %}

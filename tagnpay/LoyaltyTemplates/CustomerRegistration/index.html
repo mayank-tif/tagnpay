@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content="" name="description">
+    <meta content="" name="author">
+    <meta content="" name="keywords">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <!-- favicon -->
+    <link href="/static/RegTemplateFiles/img/favicon-alice.png" rel="icon" sizes="32x32" type="image/png">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+     <!-- font awesome CSS -->
+     <link href="/static/RegTemplateFiles/font-awesome/css/font-awesome.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+ <!-- Style css -->
+ <link rel="stylesheet" type="text/css" href="/static/RegTemplateFiles/style/style.css" media="screen" />
+<title>CP67 Mall, Mohali</title>
+</head>
+<body>
+
+<section class="Intro-page-sec">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+            <div class="logo-info-item">
+                       <img alt="logo" src="/static/RegTemplateFiles/img/logo-cp.png">           
+          </div>          
+        </div>                                
+      </div>
+</div>
+</section>
+<section class="Intro-page-sec">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="contact-info">
+            <div class="image-info-item">
+                  <img src="/static/RegTemplateFiles/img/homeimage-cp67.jpg" alt="" />
+ 
+            </div>            
+          </div>          
+        </div>  
+        <div class="col-md-6">
+          <div class="contact-page-form" method="post">
+            <h2>Register Now</h2> 
+            <font color="#FF0000"><h6>{{message}}</h6></font>
+            <form method="post">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="single-input-field">
+                       <label>Full Name</label>
+                    <input type="text" placeholder="Your Name" name="firstname" required/>
+                  </div>
+                </div>  
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="single-input-field">
+                       <label>E-mail</label>
+                    <input type="email" placeholder="E-mail" name="email" required/>
+                  </div>
+                </div>                              
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="single-input-field">
+                       <label>Phone Number</label>
+                    <input type="text" placeholder="Phone Number" name="mobileno" maxlength="10" required/>
+                  </div>
+                </div>  
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="single-input-field">
+                       <label>Gender</label>
+                       <select name="gender" placeholder="Gender" required>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Others">Others</option>
+                       </select>
+
+                       
+                    
+                  </div>
+                </div>  
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="single-input-field">
+                      <label>Birthday</label>
+                    <input type="date" placeholder="DOB" name="dob" required/>
+                  </div>
+                </div>  
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="single-input-field">
+                      <label>Anniversary</label>
+                    <input type="date" placeholder="DOA" name="doa"/>
+                  </div>
+                </div>                                           
+              <div class="single-input-fieldsbtn">
+                <input type="submit" value="Register"/>
+              </div>                          
+            </div>
+            </form>   
+          </div>      
+        </div>
+      </div>
+      </div>
+    </section>
+
+      <section class="Intro-page-sec">
+        <div class="container">
+      <div class="row">
+        
+        <div class="col-md-12">        
+          <div class="Brand-page-slider">
+            <!--<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3431.471735616275!2d76.72151267557824!3d30.677000774611173!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390fefb32938980b%3A0x1b5bba1f090e8993!2sCP67%20Mall%20Mohali!5e0!3m2!1sen!2sin!4v1727421746774!5m2!1sen!2sin" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>-->
+              <h2>Top Brands</h2> 
+            
+<div class="card11">
+<div class="logos-slider">
+  <div class="logos-slider-container">
+    <img src="/static/RegTemplateFiles/img/brand-logo1.png"/>
+     <img src="/static/RegTemplateFiles/img/brand-logo2.png"/>
+      <img src="/static/RegTemplateFiles/img/brand-logo3.png"/>
+       <img src="/static/RegTemplateFiles/img/brand-logo4.png"/>
+        <img src="/static/RegTemplateFiles/img/brand-logo5.png"/>
+         <img src="/static/RegTemplateFiles/img/brand-logo6.png"/>
+          <img src="/static/RegTemplateFiles/img/brand-logo7.png"/>
+           <img src="/static/RegTemplateFiles/img/brand-logo8.png"/>
+            <img src="/static/RegTemplateFiles/img/brand-logo9.png"/>
+             <img src="/static/RegTemplateFiles/img/brand-logo10.png"/>
+    
+  </div>
+
+  <div class="logos-slider-container">
+    <img src="/static/RegTemplateFiles/img/brand-logo1.png"/>
+     <img src="/static/RegTemplateFiles/img/brand-logo2.png"/>
+      <img src="/static/RegTemplateFiles/img/brand-logo3.png"/>
+       <img src="/static/RegTemplateFiles/img/brand-logo4.png"/>
+        <img src="/static/RegTemplateFiles/img/brand-logo5.png"/>
+         <img src="/static/RegTemplateFiles/img/brand-logo6.png"/>
+          <img src="/static/RegTemplateFiles/img/brand-logo7.png"/>
+           <img src="/static/RegTemplateFiles/img/brand-logo8.png"/>
+            <img src="/static/RegTemplateFiles/img/brand-logo9.png"/>
+             <img src="/static/RegTemplateFiles/img/brand-logo10.png"/>
+  </div>
+</div>
+</div>  
+          </div>          
+        </div>        
+      </div>
+    </div>
+    </section>
+  
+  <section class="contact-page-sec">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="contact-info">
+            <div class="contact-info-item">
+              <div class="contact-info-icon">
+                <i class="fas fa-map-marked"></i>
+              </div>
+              <div class="contact-info-text">
+                <h2>address</h2>
+                <span>Site No. 252, Sector 67, Mohali</span> 
+              </div>
+            </div>            
+          </div>          
+        </div>          
+        <div class="col-md-4">
+          <div class="contact-info">
+            <div class="contact-info-item">
+              <div class="contact-info-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="contact-info-text">
+                <h2>E-mail</h2>
+                <span>enquiry@cp67.co.in</span> 
+                
+              </div>
+            </div>            
+          </div>                
+        </div>                
+        <div class="col-md-4">
+          <div class="contact-info">
+            <div class="contact-info-item">
+              <div class="contact-info-icon">
+                <i class="fas fa-mobile-alt"></i>
+              </div>
+              <div class="contact-info-text">
+                <h2>Contact us</h2>
+                <span>+91 97296-76767</span>
+              </div>
+            </div>            
+          </div>          
+        </div>          
+      </div>
+      </div>
+      </section>
+
+       <!-- footer -->
+       <footer class="black text-center">
+        <div class="container">
+          <div class="row">
+
+            <div class="col-md-6">
+              <div class="footer-logo">
+                <img alt="logo" src="/static/RegTemplateFiles/img/funfle-logo.png">    
+              </div>
+          </div>
+
+          <div class="col-md-6">
+                <!-- <div class="social-icons">
+                  <a href="#"><span class="fas fa-facebook-f"></span></a>
+                  <a href="#"><span class="ti-dribbble"></span></a>
+                  <a href="#"><span class="ti-twitter"></span></a>
+                  <a  href="#"><span class="ti-instagram"></span></a>
+                  <a href="#"><span class="ti-linkedin"></span></a>
+                </div> -->
+                <div class="Copyright-text">
+                  <p class="color">&copy; Fundle 2024. All Right Reserved</p>
+                </div>
+            </div>
+            
+           
+          
+
+            
+          </div>
+        </div>
+      </footer>
+      <!-- footer end -->
+
+</body>
+</html>

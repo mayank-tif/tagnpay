@@ -1,0 +1,223 @@
+{% include "header.html" %}
+    <section>
+      {% include "left_section.html" %}
+
+      <!-- #END# Right Sidebar -->
+    </section>
+
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Basic Validation -->
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+              <div class="header">
+                <h2>Bill Details</h2>
+              </div>
+              <div class="body" id="bill-container">
+                <div class="card bill-form">
+                <div align="center" height="50px;"><br><h6><font color="#FF0000">{{ message }}</font></h6></div>
+                  <div class="body">
+                    <form method="POST" name="frmenterbill" id="frmenterbill" enctype="multipart/form-data" action="{% url 'EnterBill' %}">
+                    {% csrf_token %}
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group form-float">
+                            <div class="form-line">
+                              <input
+                                type="tel"
+                                class="form-control"
+                                name="mobile_number"
+                                maxlength = "10"
+                                required
+                                oninvalid="this.setCustomValidity('Please enter a Mobile number')" 
+                                oninput="this.setCustomValidity('')"
+                              />
+                              <label class="form-label">Mobile Number</label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group form-float">
+                            <div class="form-line">
+                              <input
+                                type="file"
+                                class="form-control"
+                                name="bill_file"
+                                accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group form-float">
+                            <div class="form-line">
+                              <select name="sellocation" id="sellocation" class="form-control" required oninvalid="this.setCustomValidity('Please select a location')" 
+    oninput="this.setCustomValidity('')">
+                                <option value="">-- Select Location --</option>
+                                {% for loc in locations %}
+                                    <option value="{{ loc.location_id }}" {% if loc.location_id|stringformat:"s" == selected_category|stringformat:"s" %}selected{% endif %}>
+                                        {{ loc.location_Name }}
+                                    </option>
+                                {% endfor %}
+                              </select>
+                              <label class="form-label1">Location</label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group form-float">
+                            <div class="form-line">
+                              <input
+                                type="number"
+                                class="form-control"
+                                name="bill_amount"
+                                required
+                                oninvalid="this.setCustomValidity('Please enter Bill Amount')" 
+                                oninput="this.setCustomValidity('')"
+                              />
+                              <label class="form-label">Bill Amount</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        
+                        <div class="col-md-6">
+                          <div class="form-group form-float">
+                            <div class="form-line">
+                              <input
+                                type="text"
+                                class="form-control"
+                                name="bill_number"
+                                required
+                                oninvalid="this.setCustomValidity('Please enter Bill Number')" 
+                                oninput="this.setCustomValidity('')"
+                              />
+                              <label class="form-label">Bill Number</label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group form-float">
+                            <div class="form-line">
+                              <input
+                                type="date"
+                                class="form-control"
+                                name="bill_date"
+                                required
+                                oninvalid="this.setCustomValidity('Please enter Bill date')" 
+                                oninput="this.setCustomValidity('')"
+                              />
+                              <label class="form-label1">Bill Date</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {% comment %}<div class="row">
+                        
+                         <div class="col-md-6">
+                          <div class="form-group form-float">
+                            <div class="form-line">
+                              <input
+                                type="tel"
+                                class="form-control"
+                                name="phone"
+                                required
+                                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                              />
+                              <label class="form-label">Phone Number</label>
+                            </div>
+                          </div>
+                        </div> 
+                      </div>{% endcomment %}
+                    <button class="btn btn-primary waves-effect" type="submit">Submit Bill</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="body">
+                
+                
+                {% comment %} <button
+                  class="btn btn-secondary waves-effect"
+                  type="button"
+                  onclick="addMoreBills()"
+                  style="position: absolute; right: 20px">
+                  <i class="fas fa-plus"></i>
+                </button> {% endcomment %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+
+      {% comment %} $(document).ready(function () {
+        // Handle category selection
+        $('#selcategory').change(function () {
+            const categoryId = $(this).val();
+            const brandSelect = $('#selbrand');
+
+            // Clear the current brand options
+            brandSelect.empty().append('<option value="">Select Brand</option>');
+
+            if (categoryId) {
+                $.ajax({
+                    url: "{% url 'GetBrandsByCategory' %}",
+                    method: "POST",
+                    headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                    data: {
+                        'category_id': categoryId
+                      },
+                    success: function (data) {
+                        data.forEach(function (brnd) {
+                            brandSelect.append(`<option value="${brnd.id}">${brnd.rwrd_brand_name}</option>`);
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching brands:', error);
+                        alert('Failed to load brands. Please try again.');
+                    }
+                });
+            }
+        });
+      });
+ {% endcomment %}
+      function addMoreBills() {
+        const billForm = document.querySelector(".bill-form");
+        const newBillForm = billForm.cloneNode(true);
+        document.getElementById("bill-container").appendChild(newBillForm);
+      }
+
+      function submitAllBills() {
+        alert("Submit all bills logic goes here");
+      }
+    </script>
+
+    <!-- FontAwesome CSS -->
+
+    <script>
+      function addMoreBills() {
+        const formContainer = document.getElementById("bill-container");
+        const newForm = formContainer
+          .querySelector(".bill-form")
+          .cloneNode(true);
+        formContainer.appendChild(newForm);
+      }
+
+      function submitAllBills() {
+        const forms = document.querySelectorAll(".bill-form form");
+        forms.forEach((form) => {
+          // Add form submission logic here
+          console.log("Submitting form:", form);
+        });
+        alert("All bills submitted successfully!");
+      }
+    </script>
+
+    {% include "footer.html" %}

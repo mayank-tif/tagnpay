@@ -1,0 +1,329 @@
+{% include "header.html" %}
+    <section>
+    {% include "left_section.html" %}
+
+      <!-- #END# Right Sidebar -->
+    </section>
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="block-header">
+          <h2>Customer Details</h2>
+        </div>
+
+        <!-- Mobile Number Search Form -->
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+              <div class="header">
+                <h2>Search Customer by Mobile Number</h2>
+              </div>
+              <div align="center" height="10px;"><h6><font color="#FF0000">{{ message }}</font></h6></div>
+              <div class="body">
+                <form method="POST" id="frmsearchcustomer" name="frmsearchcustomer" action="{% url 'CustomerSearch' %}">
+                {% csrf_token %}
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="mobile_number"
+                      name="mobile_number"
+                      placeholder="Enter Mobile Number"
+                      maxlength="10"
+                      required
+                    />
+                  </div>
+                  <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% if customerdata %}
+        <!-- Demographic Details Table -->
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card" id="demographicDetails" style="display: block">
+              <div class="header">
+                <h2>Demographic Details</h2>
+              </div>
+              <div class="body">
+                <table class="table table-bordered table-striped">
+                  <tbody>
+                    {% for customer in customerdata %}
+                    <tr>
+                      <th>Name:</th>
+                      <td>{{ customer.firstname|default_if_none:"" }}</td>
+                      <th>Mobile Number:</th>
+                      <td id="work">{{ customer.mobileno }}</td>
+                    </tr>
+                    <tr>
+                      <th>Email:</th>
+                      <td id="location">{{ customer.email|default_if_none:"" }}</td>
+                      <th>Gender:</th>
+                      <td id="age">{{ customer.gender|default_if_none:"" }}</td>
+                    </tr>
+                    <tr>
+                      <th>DOB:</th>
+                      <td id="transactionDate">{{ customer.dob|date:"d/m/Y" }}</td>
+                      <th>DOA:</th>
+                      <td id="phoneNumber">{{ customer.doa|date:"d/m/Y" }}</td>
+                    </tr>
+                    <tr>
+                      <th>Address1:</th>
+                      <td>{{ customer.address1|default_if_none:"" }}</td>
+                      <th>Address2:</th>
+                      <td>{{ customer.address2|default_if_none:"" }}</td>
+                    </tr>
+                    <tr>
+                      <th>Landmark:</th>
+                      <td>{{ customer.landmark|default_if_none:"" }}</td>
+                      <th>District:</th>
+                      <td>{{ customer.district|default_if_none:"" }}</td>
+                    </tr>
+                    <tr>
+                      <th>City:</th>
+                      <td>{{ customer.city.city_name }}</td>
+                      <th>State:</th>
+                      <td>{{ customer.state.states_name }}</td>
+                    </tr>
+                    <tr>
+                      <th>Country:</th>
+                      <td>{{ customer.country.country_name }}</td>
+                      <th>Zipcode:</th>
+                      <td>{{ customer.zipcode|default_if_none:"" }}</td>
+                    </tr>
+                    {% for pts in pointsdata %}
+                    <tr>
+                      <th>Balance Points:</th>
+                      <td>{{ pts.bal_points }}</td>
+                      <th>Tier:</th>
+                      <td>{{ pts.tier_id.tier_name }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% empty %}
+                    <tr>
+                      <td colspan='4'>No customer found.</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+        {% if transdata %}
+        <!-- Billing Details Table -->
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card" id="billingDetails" style="display: block">
+              <div class="header">
+                <h2>Billing Details</h2>
+              </div>
+              <div class="body">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th>S.No.</th>
+                        <th>Bill Number</th>
+                        <th>Bill Amount</th>
+                        <th>Bill Date</th>
+                        <th>Location</th>
+                        <th>Brand</th>
+                        <th>Earn Points</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for bills in transdata %}
+                      <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ bills.bill_number }}</td>
+                        <td>{{ bills.bill_amount }}</td>
+                        <td>{{ bills.bill_date|date:"d/m/Y" }}</td>
+                        <td>{{ bills.location_id.location_Name }}</td>
+                        <td>{{ bills.rwrd_brand_id.rwrd_brand_name }}</td>
+                        <td>{{ bills.points }}</td>
+                      </tr>
+                      {% empty %}
+                      <tr>
+                        <td colspan='7'>No Transaction found.</td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        <!-- Voucher Details Table -->
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card" id="voucherDetails" style="display: none">
+              <div class="header">
+                <h2>Voucher Details</h2>
+              </div>
+              <div class="body">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th>Voucher Code</th>
+                        <th>Issue Date</th>
+                        <th>Expiry Date</th>
+                        <th>Value</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>VOUCHER001</td>
+                        <td>2024/07/20</td>
+                        <td>2024/12/31</td>
+                        <td>$50.00</td>
+                        <td>Active</td>
+                      </tr>
+                      <tr>
+                        <td>VOUCHER002</td>
+                        <td>2024/08/01</td>
+                        <td>2024/11/30</td>
+                        <td>$30.00</td>
+                        <td>Expired</td>
+                      </tr>
+                      <tr>
+                        <td>VOUCHER003</td>
+                        <td>2024/08/10</td>
+                        <td>2024/12/10</td>
+                        <td>$75.00</td>
+                        <td>Active</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script>
+      /*document
+        .getElementById("frmsearchcustomer")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          const mobileNumber = document.getElementById("mobile_number").value;
+          //alert(mobileNumber)
+          // Simulate fetching data based on mobile number
+          /*const dummyData = {
+            3204434800: {
+              name: "Tiger Nixon",
+              work: "System Architect",
+              location: "Edinburgh",
+              age: "61",
+              transactionDate: "2011/04/25",
+              phoneNumber: "3204434800",
+            },
+            9459501584: {
+              name: "Garrett Winters",
+              work: "Accountant",
+              location: "Tokyo",
+              age: "63",
+              transactionDate: "2011/07/25",
+              phoneNumber: "9459501584",
+            },
+            // Add more dummy data as needed
+          };*/
+
+          //const details = dummyData[mobileNumber];
+
+          /*if (mobileNumber != '') {
+            document.getElementById("demographicDetails").style.display = "block";
+            document.getElementById("billingDetails").style.display = "block";
+            document.getElementById("voucherDetails").style.display = "block";
+
+            /*document.getElementById("name").textContent = details.name;
+            document.getElementById("work").textContent = details.work;
+            document.getElementById("location").textContent = details.location;
+            document.getElementById("age").textContent = details.age;
+            document.getElementById("transactionDate").textContent =
+              details.transactionDate;
+            document.getElementById("phoneNumber").textContent =
+              details.phoneNumber;*/
+          /*} else {
+            alert("No data found for the provided mobile number.");
+            document.getElementById("demographicDetails").style.display = "none";
+            document.getElementById("billingDetails").style.display = "none";
+            document.getElementById("voucherDetails").style.display = "none";
+          }
+        });*/
+    </script>
+
+    <!-- Modal HTML -->
+    <!--<div id="modal" class="modal">
+      <div class="modal-content">
+        <div class="button-close">
+          <span class="close-btn">&times;</span>
+        </div>
+        <div class="modal-header">
+          <h2 id="modal-name"></h2>
+        </div>
+
+        <div class="modal-body">
+          <table>
+            <tr>
+              <th>Work</th>
+              <td id="modal-work"></td>
+            </tr>
+            <tr>
+              <th>Location</th>
+              <td id="modal-location"></td>
+            </tr>
+            <tr>
+              <th>Age</th>
+              <td id="modal-age"></td>
+            </tr>
+            <tr>
+              <th>Transaction Date</th>
+              <td id="modal-date"></td>
+            </tr>
+            <tr>
+              <th>Phone Number</th>
+              <td id="modal-phone"></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>-->
+
+   
+   
+    <script>
+      // Function to open the modal and set its content
+      /*function openModal(name, work, location, age, date, phone) {
+        document.getElementById("modal").style.display = "flex";
+        document.getElementById("modal-name").innerText = name;
+        document.getElementById("modal-work").innerText = work;
+        document.getElementById("modal-location").innerText = location;
+        document.getElementById("modal-age").innerText = age;
+        document.getElementById("modal-date").innerText = date;
+        document.getElementById("modal-phone").innerText = phone;
+      }
+
+      // Function to close the modal
+      document.querySelector(".close-btn").onclick = function () {
+        document.getElementById("modal").style.display = "none";
+      };
+
+      // Close the modal when clicking outside of it
+      window.onclick = function (event) {
+        if (event.target === document.getElementById("modal")) {
+          document.getElementById("modal").style.display = "none";
+        }
+      };*/
+    </script>
+  {% include "footer.html" %}

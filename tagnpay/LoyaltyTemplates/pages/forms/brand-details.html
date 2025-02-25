@@ -1,0 +1,102 @@
+{% include "header.html" %}
+    <section>
+    {% include "left_section.html" %}
+
+      <!-- #END# Right Sidebar -->
+    </section>
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="block-header">
+          <h2>Brand Details</h2>
+        </div>
+
+        <!-- Mobile Number Search Form -->
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+              <div class="header">
+                <h2>Search Reward Brand by Name</h2>
+              </div>
+              {% if not rwrdbranddata and message == "success" %}
+              <div align="center" height="50px;"><h6><font color="#FF0000">No Reward brand found.</font></h6></div>
+              {% endif %}
+              <div class="body">
+                <form method="POST" id="frmsearchrwrdbrand" name="frmsearchrwrdbrand" action="{% url 'RwrdBrandSearch' %}">
+                {% csrf_token %}
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="rwrdbrand_name"
+                      name="rwrdbrand_name"
+                      placeholder="Enter Brand Name"
+                      minlength="3"
+                      required
+                    />
+                  </div>
+                  <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% if rwrdbranddata %}
+        <!-- Demographic Details Table -->
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card" id="demographicDetails" style="display: block">
+              <div class="header">
+                <h2>Reward Brand Details</h2>
+              </div>
+              {% for rwrdbrands in rwrdbranddata %}
+              <div class="body">
+                <table class="table table-bordered table-striped">
+                  <tbody>
+                    
+                    <tr>
+                      <th>Brand Name:</th>
+                      <td>{{ rwrdbrands.rwrd_brand_name|default_if_none:"" }}</td>
+                      <th>Brand Description:</th>
+                      <td id="brand_descr">{{ rwrdbrands.rwrd_brand_descr }}</td>
+                    </tr>
+                    <tr>
+                      <th>Company Name:</th>
+                      <td id="company_name">{{ rwrdbrands.company_name|default_if_none:"" }}</td>
+                      <th>Category:</th>
+                      <td id="category">{{ rwrdbrands.category_id.category_name|default_if_none:"" }}</td>
+                    </tr>
+                    <tr>
+                      <th>Shop No:</th>
+                      <td id="shopno">{{ rwrdbrands.rwrd_brand_shopno|default_if_none:"" }}</td>
+                      <th>Floor:</th>
+                      <td id="floor">{{ rwrdbrands.rwrd_brand_floor|default_if_none:"" }}</td>
+                    </tr>
+                    <tr>
+                      <th>Brand Logo:</th>
+                      <td><img src="/{{ rwrdbrands.rwrd_brand_logo }}" alt="Logo" width="100"></td>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+              </div>
+              {% empty %}
+              <div class="body">
+                <table class="table table-bordered table-striped">
+                  <tbody>
+                    <tr>
+                      <td colspan='4'>No Brand found.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+      </div>
+    </section>
+  {% include "footer.html" %}

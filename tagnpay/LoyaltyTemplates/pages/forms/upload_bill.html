@@ -1,0 +1,65 @@
+{% include "header.html" %}
+    <section>
+      {% include "left_section.html" %}
+
+      <!-- #END# Right Sidebar -->
+    </section>
+
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Basic Validation -->
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+              <div class="header">
+                <h2>Bill Details</h2>
+              </div>
+              <div class="body" id="bill-container">
+                <div class="card bill-form">
+                <div align="center" height="50px;"><br><h6><font color="#FF0000">{{ bill_details }}</font></h6></div>
+                  <div class="body">
+                    <form method="POST" name="frmuploadbill" id="frmuploadbill" enctype="multipart/form-data" action="{% url 'UploadBill' %}">
+                    {% csrf_token %}
+                      <div class="row">
+                        
+                        <div class="col-md-6">
+                          <div class="form-group form-float">
+                            <div class="form-line">
+                              <input
+                                type="file"
+                                class="form-control"
+                                name="bill_image"
+                                required
+                                oninvalid="this.setCustomValidity('Please enter Bill File')" 
+                                oninput="this.setCustomValidity('')"
+                                accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      </div>
+                    <button class="btn btn-primary waves-effect" type="submit">Submit Bill</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="body">
+                
+                
+                {% comment %} <button
+                  class="btn btn-secondary waves-effect"
+                  type="button"
+                  onclick="addMoreBills()"
+                  style="position: absolute; right: 20px">
+                  <i class="fas fa-plus"></i>
+                </button> {% endcomment %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {% include "footer.html" %}

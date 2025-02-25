@@ -1,0 +1,101 @@
+{% include "header.html" %}
+    <section>
+    {% include "left_section.html" %}
+
+      <!-- #END# Right Sidebar -->
+    </section>
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="block-header">
+          <h2>Redeem Coupon </h2>
+        </div>
+
+        <!-- Mobile Number Search Form -->
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+              <div class="header">
+                <h2>Redeem Coupon</h2>
+              </div>
+              {% if not coupondata and message == "success" %}
+              <div align="center" height="50px;"><h6><font color="#FF0000">No Coupon found.</font></h6></div>
+              {% endif %}
+              <div class="body">
+                <form method="POST" id="frmredeemcoupon" name="frmredeemcoupon" action="{% url 'RedeemCoupon' %}">
+                {% csrf_token %}
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="couponcode"
+                      name="couponcode"
+                      placeholder="Enter Coupon"
+                      required
+                    />
+                  </div>
+                  <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% if coupondata %}
+        <!-- Demographic Details Table -->
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card" id="demographicDetails" style="display: block">
+              <div class="header">
+                <h2>Coupon Details</h2>
+              </div>
+              {% for cpn in coupondata %}
+              <div class="body">
+                <table class="table table-bordered table-striped">
+                  <tbody>
+                    
+                    <tr>
+                      <th>Brand Name:</th>
+                      <td>{{ cpn.rwrd_brand_name|default_if_none:"" }}</td>
+                      <th>Brand Description:</th>
+                      <td id="brand_descr">{{ cpn.rwrd_brand_descr }}</td>
+                    </tr>
+                    <tr>
+                      <th>Company Name:</th>
+                      <td id="company_name">{{ cpn.company_name|default_if_none:"" }}</td>
+                      <th>Category:</th>
+                      <td id="category">{{ cpn.category_id.category_name|default_if_none:"" }}</td>
+                    </tr>
+                    <tr>
+                      <th>Shop No:</th>
+                      <td id="shopno">{{ cpn.rwrd_brand_shopno|default_if_none:"" }}</td>
+                      <th>Floor:</th>
+                      <td id="floor">{{ cpn.rwrd_brand_floor|default_if_none:"" }}</td>
+                    </tr>
+                    <tr>
+                      <th>Brand Logo:</th>
+                      <td><img src="/{{ cpn.rwrd_brand_logo }}" alt="Logo" width="100"></td>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+              </div>
+              {% empty %}
+              <div class="body">
+                <table class="table table-bordered table-striped">
+                  <tbody>
+                    <tr>
+                      <td colspan='4'>No Brand found.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+      </div>
+    </section>
+  {% include "footer.html" %}

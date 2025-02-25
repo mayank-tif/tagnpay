@@ -1,0 +1,455 @@
+{% include "header.html" %}
+  <section>
+    {% include "left_section.html" %}
+      <!-- #END# Left Sidebar -->
+    </section>
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+              <div class="header">
+                <h2>Reward Categories</h2>
+                <button
+                  class="btn btn-primary waves-effect"
+                  type="button"
+                  id="viewbutton"
+                  style="float: right; margin-left: 10px"
+                  onclick="toggleForm()"
+                >
+                  View
+                </button>
+                <button
+                  class="btn waves-effect"
+                  type="button"
+                  id="importbutton"
+                  style="float: right;"
+                  onclick="toggleForm1()"
+                >
+                  Import
+                </button>
+              </div>
+              
+              <div class="body" id="form_container" style="display: block;">
+                {% if messages %}
+              {% for message in messages %}
+              <div align="center" height="50px;"><h6><font color="#ff0000" class="{{ message.tags }}">{{ message }}</font></h6></div>
+              {% endfor %}
+              {% elif request.GET.msg == "deleted" %}
+              <div align="center" height="50px;"><h6><font color="#ff0000">Reward category deleted successfully</font></h6></div>
+              {% endif %}
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th>S.No.</th>
+                        <th>Category Name</th>
+                        <th>Category Description</th>
+                        <!--<th>Category Image</th>-->
+                        <th>Edit</th>
+                        <th>Deactivate</th>
+                      </tr>
+                    </thead>
+                    <tbody id="categoryTableBody">
+                      <!-- Dynamic rows will be appended here by JavaScript -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- File Upload -->
+              <div class="row clearfix" id="form_container1" style="display:none;">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div id="progress-bar" style="display: none;">
+                    <div id="progress">0%</div>
+                  </div>
+
+                  <div id="summary" align="center" style="display: none; margin-top:25px;">
+                      <h6><font color="#ff0000">All records processed successfully.&nbsp;&nbsp;Total Successfully Imported: <span id="success-count">0</span>.&nbsp;&nbsp;Total Rejected Records: <span id="rejected-count">0</span></h6></font>
+                  </div>
+                  <div class="body">
+                      <form id="upload_category_form" name="upload_category_form" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group form-float">
+                          <div class="form-line">
+                            <input
+                              type="file"
+                              class="form-control"
+                              name="categoryfile"
+                              accept=".csv, .xlsx"
+                              required
+                            />
+                            <!--<label class="form-label" for="file_input">
+                              Upload File (CSV, XLSX)
+                            </label>-->
+                          </div>
+                        </div>
+                        <p class="note" style="color:#2196f3;">Upload File in <a href="/media/sample_files/sample_categories.csv">CSV</a> or <a href="/media/sample_files/sample_categories.xlsx">XLSX</a> format. Click to download sample file.</p>
+                        <p class="note">
+                          <strong>Note:</strong> The following characters are allowed in CSV/XLSX file names:
+                          <ul class="note">
+                            <li>Upper case characters (A to Z)</li>
+                            <li>Lower case characters (a to z)</li>
+                            <li>Numbers (0 to 9)</li>
+                            <li>Underscore (_)</li>
+                          </ul>
+                        </p>
+                        <button class="btn btn-primary waves-effect" type="submit">Upload</button>
+                      </form>
+                      
+                    <div id="rejected-records" style="display: none; margin-top: 25px;">
+                        <h5>Rejected Records</h5>
+                        <div id="rejected-list" class="table-responsive">
+                          <table class="table table-bordered table-striped" id="rejected-table">
+                            <thead>
+                              <tr>
+                                <th>Category Name</th>
+                                <th>Category Description</th>
+                                <th>Reason</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                          </table>  
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <!-- #END# File Upload -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      
+      const params = new URLSearchParams(window.location.search);
+      const tabValue = params.get('tb');
+      //alert(tabValue);
+      if(tabValue == "import") {
+        toggleForm1();
+        document.getElementById("importbutton").disabled = true;
+        document.getElementById("viewbutton").disabled = false;
+        document.getElementById('importbutton').classList.add('btn-primary');
+        document.getElementById('viewbutton').classList.remove('btn-primary');
+      }
+
+      function toggleForm() {
+        const formContainer = document.getElementById("form_container");
+        const formContainer1 = document.getElementById("form_container1");
+        if (formContainer.style.display === "none") {
+          formContainer.style.display = "block";
+          formContainer1.style.display = "none";
+        } else {
+          formContainer.style.display = "none";
+          formContainer1.style.display = "block";
+          
+        }
+      }
+      function toggleForm1() {
+        const formContainer = document.getElementById("form_container");
+        const formContainer1 = document.getElementById("form_container1");
+        if (formContainer1.style.display === "none") {
+          formContainer1.style.display = "block";
+          formContainer.style.display = "none";
+        } else {
+          formContainer1.style.display = "none";
+          formContainer.style.display = "block";
+          
+        }
+      }
+
+      document.getElementById('viewbutton').addEventListener('click', function () {
+        //this.disabled = true;
+        //document.getElementById("importbutton").disabled = false;
+        this.style.cursor = 'not-allowed';
+        document.getElementById("importbutton").style.cursor = '';
+        this.classList.add('btn-primary'); 
+        document.getElementById('importbutton').classList.remove('btn-primary');
+      });
+      document.getElementById('importbutton').addEventListener('click', function () {
+        //this.disabled = true;
+        //document.getElementById("viewbutton").disabled = false;
+        this.style.cursor = 'not-allowed';
+        document.getElementById("viewbutton").style.cursor = '';
+        this.classList.add('btn-primary'); 
+        document.getElementById('viewbutton').classList.remove('btn-primary');
+      });
+
+      {% comment %} document
+        .getElementById("category_image")
+        .addEventListener("change", function (event) {
+          const imagePreview = document.getElementById("image_preview");
+          const file = event.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              imagePreview.src = e.target.result;
+              imagePreview.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+          } else {
+            imagePreview.src = "";
+            imagePreview.style.display = "none";
+          }
+        });
+
+      function handleFileUpload(event) {
+        const file = event.target.files[0];
+        if (file) {
+          // Implement file processing here
+          console.log("Selected file:", file.name);
+        }
+      } {% endcomment %}
+
+      $(document).ready(function () {
+        $('#upload_category_form').on('submit', function (e) {
+            e.preventDefault();
+            //alert("Hiiiiiiii");
+            let formData = new FormData(this);
+            let progressBar = $('#progress');
+            progressBar.css('width', '0%').text('0%');
+            //alert(formData);
+            $.ajax({
+                
+                url: `{% url 'ImportRwrdCategory' %}`, // Replace with your URL pattern name
+                method: 'POST',
+                headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                data: formData,
+                processData: false,
+                contentType: false,
+                xhr: function () {
+                    let xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener('progress', function (e) {
+                      //alert(xhr);
+                      document.getElementById("progress-bar").style.display = 'block';
+                        if (e.lengthComputable) {
+                            let percentComplete = (e.loaded / e.total) * 100;
+                            progressBar.css('width', percentComplete + '%').text(Math.round(percentComplete) + '%');
+                        }
+                    });
+                    return xhr;
+                },
+                success: function (response) {
+                    progressBar.css('width', '100%').text('Upload Complete');
+                    document.getElementById("summary").style.display = 'block';
+                    document.getElementById("rejected-records").style.display = 'block';
+                    $('#success-count').text(response.success_count);
+                    $('#rejected-count').text(response.rejected_count);
+                    // Display rejected records
+                    //alert(response.rejected_records);
+                    let rejectedRecords = response.rejected_records || [];
+                    let rejectedTableBody = $('#rejected-table tbody');
+                    rejectedTableBody.empty();
+                    //$('#rejected-list').empty();
+                    //$('#rejected-list').append('<table class="table table-bordered table-striped"><thead><tr><th>Category Name</th><th>Category Description</th><th>Reason</th></tr></thead><tbody>');
+                    if (rejectedRecords.length > 0) {
+                      rejectedRecords.forEach(record => {
+                          //$('#rejected-list').append('<li>' + record.reason + ': ' + JSON.stringify(record.row) + '</li>');
+                          rejectedTableBody.append('<tr><td>'+record.row.category_name +'</td><td>'+record.row.category_description+'</td><td>' + record.reason + '</td></tr>');
+                      });
+                    }
+                },
+                error: function () {
+                    progressBar.css('width', '0%').text('Upload Failed');
+                    alert('An error occurred. Please try again.');
+                }
+            });
+          });
+      });
+    </script>
+
+    <!-- Modal -->
+    <div 
+      class="modal fade"
+      id="categoryModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="categoryModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="categoryModalLabel">
+              Edit Reward Category
+            </h4>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Form content from above -->
+            <form id="modal_form_validation" name="modal_form_validation" method="POST" action="{% url 'EditRwrdCategory' %}">
+              {% csrf_token %}
+              <input type="hidden" name="modal_category_id" id="modal_category_id" />
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group form-float">
+                    <div class="form-line">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="modal_category_name"
+                        name="modal_category_name"
+                        required
+                      />
+                      <label class="form-label1">Category Name</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group form-float">
+                    <div class="form-line">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="modal_category_description"
+                        name="modal_category_description"
+                        required
+                      />
+                      <label class="form-label1">Category Description</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% comment %} <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group form-float">
+                    <div class="form-line">
+                      <input
+                        type="file"
+                        class="form-control"
+                        name="modal_category_image"
+                        id="modal_category_image"
+                        required
+                      />
+                    </div>
+                    <img
+                      id="modal_image_preview"
+                      src=""
+                      alt="Category Image Preview"
+                      style="display: none; margin-top: 10px; max-height: 200px"
+                    />
+                  </div>
+                </div>
+              </div> {% endcomment %}
+              <div class="form-actions"></div>
+              <button class="btn btn-primary waves-effect" type="submit">SUBMIT</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Example data for the table
+      
+      const cat_json_data = JSON.parse('{{ rwrdcategories|safe }}');  // Use safe filter to avoid HTML escaping
+      const categories = cat_json_data;
+
+      // Function to populate the category table
+      function populateCategoryTable() {
+        //alert(cat_json_data);
+        const tableBody = document.getElementById("categoryTableBody");
+        tableBody.innerHTML = "";
+
+        categories.forEach((cat, index) => {
+          const row = document.createElement("tr");
+
+          row.innerHTML = `
+          <td>${index + 1}</td>
+        <td>${cat.category_name}</td>
+        <td>${cat.category_description}</td>
+        <td>
+  <button type="button" class="btn btn-primary" onclick="EditCategory(${index}, 'edit', ${cat.category_id})">
+    <i class="fas fa-edit fa-xs"></i>
+  </button>
+</td>
+<td>
+  <button type="button" class="btn btn-danger" onclick="deleteCategory(${index}, ${cat.category_id})">
+    <i class="fas fa-trash-alt fa-xs"></i>
+  </button>
+</td>
+      `;
+
+          tableBody.appendChild(row);
+        });
+      }
+
+      // Function to open the modal with category details
+      function EditCategory(index, mode, catid) {
+        const category = categories[index];
+
+        fetch(`{% url 'GetRwrdCategory' %}`, {
+          method: "POST",
+          headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+          body: JSON.stringify({ "catid": catid })
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Populate form with tier data
+          //alert(data.category_name);
+          //alert(data.category_description);
+          
+          document.getElementById("modal_category_id").value = data.category_id;
+          document.getElementById("modal_category_name").value = data.category_name;
+          document.getElementById("modal_category_description").value = data.category_description;
+          //document.getElementById("modal_tabKey").value = tabKey;
+          //document.getElementById("modal_index").value = tierid;
+        })
+        .catch(error => console.error("Error fetching category data:", error));
+
+        /*if (mode === "view") {
+          document.querySelector(
+            '[name="modal_category_name"]'
+          ).readOnly = true;
+          document.querySelector(
+            '[name="modal_category_description"]'
+          ).readOnly = true;
+          document.querySelector(
+            '[name="modal_category_image"]'
+          ).style.display = "none";
+          document.querySelector(".form-actions").style.display = "none";
+        } else {
+          document.querySelector(
+            '[name="modal_category_name"]'
+          ).readOnly = false;
+          document.querySelector(
+            '[name="modal_category_description"]'
+          ).readOnly = false;
+          document.querySelector(
+            '[name="modal_category_image"]'
+          ).style.display = "block";
+          document.querySelector(".form-actions").style.display = "block";
+        }*/
+
+        $("#categoryModal").modal("show");
+      }
+
+      // Function to delete a category
+      function deleteCategory(index,catid) {
+        //categories.splice(index, 1);
+        //populateCategoryTable();
+        if (confirm("Are you sure you want to delete this Reward Category?")) {
+          $.ajax({
+            url: `{% url 'DelRwrdCategory' %}`,  // Endpoint to delete item
+            type: 'POST',
+            headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+            data: { catid: catid },
+            success: function(response) {
+                window.location.href = "/settings/rwrdcategories/?msg=deleted";
+            }
+        });
+        }
+      }
+
+      // Call the function to populate the table on page load
+      populateCategoryTable();
+    </script>
+
+    {% include "footer.html" %}

@@ -1,0 +1,223 @@
+<!-- Left Sidebar -->
+<aside id="leftsidebar" class="sidebar">
+    <!-- User Info -->
+    <div class="user-info">
+      <div class="image">
+        <img src="/static/images/user.png" width="48" height="48" alt="User" />
+      </div>
+      <div class="info-container">
+        <div
+          class="name"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          {{ request.session.loggedin_user_name }}
+          
+        </div>
+        <div class="email">{{ request.session.loggedin_user_email }}</div>
+        <div class="btn-group user-helper-dropdown">
+          <i
+            class="material-icons"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="true"
+            >keyboard_arrow_down</i
+          >
+          <ul class="dropdown-menu pull-right">
+            <li>
+              <a href="javascript:void(0);"
+                ><i class="material-icons">person</i>Profile</a
+              >
+            </li>
+
+            <li>
+              <a href="{% url 'login' %}"><i class="material-icons">input</i>Sign Out</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- #User Info -->
+    <!-- Menu -->
+    <div class="menu">
+      <ul class="list">
+        <li class="header">MAIN NAVIGATION</li>
+        <li {% if request.resolver_match.url_name == 'home' %} class="active" {% endif %}>
+          <a href="{% url 'home' %}">
+            <i class="material-icons">home</i>
+            <span>Home</span>
+          </a>
+        </li>
+        <li {% if request.resolver_match.url_name == 'Viewlivemonitor' %} class="active" {% endif %}>
+          <a href="{% url 'analytics:Viewlivemonitor' %}">
+            <i class="material-icons">monitor</i>
+            <span>Live Monitor</span>
+          </a>
+        </li>
+        <li {% if request.resolver_match.url_name == 'EnterBill' or request.resolver_match.url_name == 'CustRegistration' or request.resolver_match.url_name == 'CustomerSearch' or request.resolver_match.url_name == 'RedeemPoints' or request.resolver_match.url_name == 'RwrdBrandSearch' or request.resolver_match.url_name == 'RedeemCoupon' %} class="active" {% endif %}>
+          <a href="javascript:void(0);" class="menu-toggle">
+            <i class="material-icons">widgets</i>
+            <span>Rewards Desk</span>
+          </a>
+          <ul class="ml-menu">
+            <li {% if request.resolver_match.url_name == 'CustomerSearch' %} class="active" {% endif %}>
+              <a href="{% url 'CustomerSearch' %}">Customer Search</a>
+            </li>
+            <li {% if request.resolver_match.url_name == 'CustRegistration' %} class="active" {% endif %}>
+              <a href="{% url 'CustRegistration' %}">Registration</a>
+            </li>
+            <li {% if request.resolver_match.url_name == 'EnterBill' %} class="active" {% endif %}>
+              <a href="{% url 'EnterBill' %}">Enter Bill</a>
+            </li>
+            <li {% if request.resolver_match.url_name == 'RedeemPoints' %} class="active" {% endif %}>
+              <a href="{% url 'RedeemPoints' %}">Redeem Points</a>
+            </li>
+            <li {% if request.resolver_match.url_name == 'RedeemCoupon' %} class="active" {% endif %}>
+              <a href="{% url 'RedeemCoupon' %}">Redeem Coupon</a>
+            </li>
+            <!--<li {% if request.resolver_match.url_name == 'RwrdBrandSearch' %} class="active" {% endif %}>
+              <a href="{% url 'RwrdBrandSearch' %}">Reward Brand Search</a>
+            </li>-->
+            <!--<li>
+              <a href="pages/forms/customer-details.html"
+                >View Customer Details</a
+              >
+            </li>-->
+          </ul>
+        </li>
+
+        <li {% if request.resolver_match.url_name == 'CustomersByLocation' or request.resolver_match.url_name == 'CustomerDataReport' or request.resolver_match.url_name == 'TransactionSummary' or request.resolver_match.url_name == 'TransactionData' or request.resolver_match.url_name == 'RepeatTransbyLocSummary' or request.resolver_match.url_name == 'EarnBurnSummary' or request.resolver_match.url_name == 'CampaignROI' or request.resolver_match.url_name == 'RepeatCustomersReport' or request.resolver_match.url_name == 'TopCustomers'%} class="active" {% endif %}>
+          <a href="javascript:void(0);" class="menu-toggle">
+            <i class="material-icons">widgets</i>
+            <span>Analytics</span>
+          </a>
+          <ul class="ml-menu">
+            <!--<li>
+             <a href="pages/forms/analytics-stock-report.html">Pending bills</a>
+            </li>
+            <li>
+              <a href="pages/forms/analytics-stock-report.html">Rewards Desk Stock Report</a>
+            </li>-->
+            <li {% if request.resolver_match.url_name == 'CustomersByLocation' %} class="active" {% endif %}>
+              <a href="{% url 'analytics:CustomersByLocation' %}">Customers Summary</a>
+            </li>
+            <li {% if request.resolver_match.url_name == 'TransactionSummary' %} class="active" {% endif %}>
+              <a href="{% url 'analytics:TransactionSummary' %}">Transaction Summary</a>
+            </li>
+            <li {% if request.resolver_match.url_name == 'CustomerDataReport' %} class="active" {% endif %}>
+              <a href="{% url 'analytics:CustomerDataReport' %}">Customer Data</a>
+            </li>
+            <li {% if request.resolver_match.url_name == 'TransactionData' %} class="active" {% endif %}>
+              <a href="{% url 'analytics:TransactionData' %}">Transaction Data</a>
+            </li>
+            <li {% if request.resolver_match.url_name == 'RepeatTransbyLocSummary' %} class="active" {% endif %}>
+              <a href="{% url 'analytics:RepeatTransbyLocSummary' %}">Repeat Purchase</a>
+            </li>
+            <li {% if request.resolver_match.url_name == 'EarnBurnSummary' %} class="active" {% endif %}>
+              <a href="{% url 'analytics:EarnBurnSummary' %}">Earn Burn Summary</a>
+            </li>
+            <li {% if request.resolver_match.url_name == 'CampaignROI' %} class="active" {% endif %}>
+              <a href="{% url 'analytics:CampaignROI' %}">Campaign ROI</a>
+            </li>
+            <li {% if request.resolver_match.url_name == 'RepeatCustomersReport' %} class="active" {% endif %}>
+              <a href="{% url 'analytics:RepeatCustomersReport' %}">Repeat Customers</a>
+            </li>
+            <li {% if request.resolver_match.url_name == 'TopCustomers' %} class="active" {% endif %}>
+              <a href="{% url 'analytics:TopCustomers' %}">Top Customers</a>
+            </li>
+            <!--<li>
+              <a href="pages/forms/analytics-transaction-report.html"
+                >Transaction Report</a
+              >
+            </li>-->
+          </ul>
+        </li>
+
+        <li {% if request.resolver_match.url_name == 'ProgramSetup' or request.resolver_match.url_name == 'LogicConfig' or request.resolver_match.url_name == 'LocationMaster' or request.resolver_match.url_name == 'RwrdCategories' or request.resolver_match.url_name == 'RwrdBrands' or request.resolver_match.url_name == 'RwrdGVs' or request.resolver_match.url_name == 'SMSConfig' %} class="active" {% endif %}>
+          <a href="javascript:void(0);" class="menu-toggle">
+            <i class="material-icons">widgets</i>
+            <span>Settings</span>
+          </a>
+          <ul class="ml-menu">
+                <li {% if request.resolver_match.url_name == 'ProgramSetup' %} class="active" {% endif %}>
+                  <a href="{% url 'ProgramSetup' %}">Program Setup</a>
+                </li>
+           
+                <li {% if request.resolver_match.url_name == 'LogicConfig' %} class="active" {% endif %}>
+                  <a href="{% url 'LogicConfig' %}">Logic configuration</a>
+                </li>
+                <li {% if request.resolver_match.url_name == 'LocationMaster' %} class="active" {% endif %}>
+                  <a href="{% url 'LocationMaster' %}">Location Master</a>
+                </li>
+                <li {% if request.resolver_match.url_name == 'RwrdCategories' %} class="active" {% endif %}>
+                  <a href="{% url 'RwrdCategories' %}">Reward Category</a>
+                </li>
+                <li {% if request.resolver_match.url_name == 'RwrdBrands' %} class="active" {% endif %}>
+                  <a href="{% url 'RwrdBrands' %}">Reward Brands</a>
+                </li>
+                <li {% if request.resolver_match.url_name == 'RwrdGVs' %} class="active" {% endif %}>
+                  <a href="{% url 'RwrdGVs' %}">Reward Gift Vouchers</a>
+                </li>
+                <li {% if request.resolver_match.url_name == 'SMSConfig' %} class="active" {% endif %}>
+                  <a href="{% url 'SMSConfig' %}">SMS Configuration</a>
+                </li>
+          
+            </li>
+          </ul>
+        </li>
+
+        <!--<li>
+          <a href="javascript:void(0);" class="menu-toggle">
+            <i class="material-icons">widgets</i>
+            <span>Support Desk</span>
+          </a>
+          <ul class="ml-menu">
+            
+                <li>
+                  <a href="pages/forms/supportdesk-uploadcategory.html"
+                    >Upload Category</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/forms/supportdesk-uploadbrand.html">Upload Brand</a>
+                </li>
+                <li>
+                  <a href="pages/forms/supportdesk-importvouchers.html"
+                    >Import Vouchers</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/forms/supportdesk-vouchermaster.html">Import Stock</a>
+                </li>
+                <li>
+                  <a href="pages/forms/supportdesk-expiry-extendvouchers.html"
+                    >Issue Rewards desk stock</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/forms/supportdesk-expiry-extendvouchers.html"
+                    >Extend Expiry vouchers</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/forms/supportdesk-updatebill.html">Update bill</a>
+                </li>
+         
+            </li>
+          </ul>
+        </li>-->
+      </ul>
+    </div>
+    <!-- #Menu -->
+    <!-- Footer -->
+    <div class="legal">
+      <div class="copyright">
+        &copy; 2023 - 2024
+        <a href="javascript:void(0);">Tag'N'Pay Loyalty Program</a>.
+      </div>
+      <div class="version"><b>Version: </b> 1.0.5</div>
+    </div>
+    <!-- #Footer -->
+  </aside>
+  <!-- #END# Left Sidebar -->

@@ -1,0 +1,276 @@
+{% include "header.html" %}
+    <section>
+      {% include "left_section.html" %}
+      <!-- #END# Right Sidebar -->
+    </section>
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Basic Validation -->
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+              <div class="header">
+                <h2>Customer Registration</h2>
+              </div>
+              <div align="center" height="50px;"><br><h6><font color="#FF0000">{{ message }}</font></h6></div>
+              <div class="body">
+                <form name="frmregistration" id="frmregistration" method="POST" action="{% url 'CustRegistration' %}">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="name"
+                            required
+                          />
+                          <input
+                            type="hidden"
+                            name="regsource"
+                            value="Platform"
+                          />
+                          <label class="form-label">Name</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="tel"
+                            class="form-control"
+                            name="mobileno"
+                            required
+                            maxlength="10"
+                          />
+                          <label class="form-label">Mobile Number</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="email"
+                            class="form-control"
+                            name="email"
+                            required
+                          />
+                          <label class="form-label">Email</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                          <input
+                            type="radio"
+                            name="gender"
+                            id="male"
+                            class="with-gap"
+                            value="Male"
+                          />
+                          <label for="male">Male</label>
+                          <input
+                            type="radio"
+                            name="gender"
+                            id="female"
+                            class="with-gap"
+                            value="Female"
+                          />
+                          <label for="female" class="m-l-20">Female</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                  <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="date"
+                            class="form-control"
+                            name="dob"
+                            required
+                          />
+                          <label class="form-label1">DOB</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="date"
+                            class="form-control"
+                            name="doa"
+                          />
+                          <label class="form-label1">DOA</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    class="btn btn-link"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#moreDetails"
+                    aria-expanded="false"
+                    aria-controls="moreDetails"
+                    onclick="moveSubmitButton()">
+                    Fill more details
+                    <span class="glyphicon glyphicon-chevron-down"></span>
+                  </button>
+                  <div class="collapse" id="moreDetails">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group form-float">
+                          <div class="form-line">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="address1"
+                            />
+                            <label class="form-label">Address1</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-float">
+                          <div class="form-line">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="address2"
+                            />
+                            <label class="form-label">Address2</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group form-float">
+                          <div class="form-line">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="landmark"
+                            />
+                            <label class="form-label">Landmark</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-float">
+                          <div class="form-line">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="district"
+                            />
+                            <label class="form-label">District</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group form-float">
+                          <div class="form-line">
+                              <select name="city" id="city" class="form-control">
+                                <option value="">-- Select City --</option>
+                                {% for city in cities %}
+                                    <option value="{{ city.city_id }}">
+                                        {{ city.city_name }}
+                                    </option>
+                                {% endfor %}
+                              </select>
+                            <label class="form-label1">City</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-float">
+                          <div class="form-line">
+                              <select name="state" id="state" class="form-control">
+                                <option value="">-- Select State --</option>
+                                {% for state in states %}
+                                    <option value="{{ state.states_id }}">
+                                        {{ state.states_name }}
+                                    </option>
+                                {% endfor %}
+                              </select>
+                            <label class="form-label1">State</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-float">
+                          <div class="form-line">
+                            <select name="country" id="country" class="form-control">
+                                <option value="">-- Select Country --</option>
+                                {% for country in countries %}
+                                    <option value="{{ country.country_id }}">
+                                        {{ country.country_name }}
+                                    </option>
+                                {% endfor %}
+                              </select>
+                            <label class="form-label1">Country</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-float">
+                          <div class="form-line">
+                            <input
+                              type="number"
+                              class="form-control"
+                              name="zipcode"
+                              pattern="[1-9]{3}-[1-9]{3}"
+                              maxlength="6"
+                            />
+                            <label class="form-label">Zip Code</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {% comment %} <div class="form-group">
+                      <input type="checkbox" id="checkbox" name="checkbox" />
+                      <label for="checkbox">I have read and accept the terms</label>
+                    </div> {% endcomment %}
+                  </div>
+                  <button
+                    class="btn btn-primary waves-effect"
+                    type="submit"
+                    id="submitBtn">
+                    SUBMIT
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- #END# Basic Validation -->
+      </div>
+    </section>
+
+    <script>
+      function moveSubmitButton() {
+        const moreDetails = document.getElementById("moreDetails");
+        const submitBtn = document.getElementById("submitBtn");
+
+        moreDetails.addEventListener("shown.bs.collapse", function () {
+          moreDetails.appendChild(submitBtn);
+        });
+
+        moreDetails.addEventListener("hidden.bs.collapse", function () {
+          document.querySelector("form").appendChild(submitBtn);
+        });
+      }
+    </script>
+
+    {% include "footer.html" %}

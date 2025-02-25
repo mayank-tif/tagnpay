@@ -1,0 +1,439 @@
+
+{% include "header.html" %}
+   
+    <section>
+
+      {% include "left_section.html" %}
+
+      <!-- Right Sidebar -->
+
+      <!-- #END# Right Sidebar -->
+    </section>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <section class="content">
+      <div class="container-fluid">
+        
+        <!-- Customer Details Table -->
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            
+            <div class="card">
+              <div class="header">
+                <h2>Live Monitor</h2>
+              </div>
+              <div class="body">
+                <!-- Filters -->
+                <form id="reportFilterForm">
+                  <div class="row">
+                      {% csrf_token %}
+                    <div class="col-md-3">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="start_date"
+                            name="start_date"
+                            value="{{start_date|date:'Y-m-d'}}"                        
+                          />
+                          <label class="form-label1">Start Date</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="end_date"
+                            name="end_date"
+                            value="{{end_date|date:'Y-m-d'}}"
+                          />
+                          <label class="form-label1">End Date</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <select name="zone" id="zone" class="form-control">
+                            <option value="">-- Select Zone--</option>
+                            {% for zone in zones %}
+                                <option value="{{ zone.zone_id }}" {% if selected_zone and zone.zone_id|stringformat:"s" == selected_zone|stringformat:"s" %}selected{% endif %}>
+                                     {{ zone.zone_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                         <label class="form-label1">Filters</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <select name="location" id="location2" class="form-control">
+                            <option value="">-- Select Location --</option>
+                            {% for location in locations %}
+                                <option value="{{ location.location_code }}" {% if selected_location and location.location_code|stringformat:"s" == selected_location|stringformat:"s" %}selected{% endif %}>
+                                  {{ location.location_Name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                         <label class="form-label1">Location</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group form-float">
+                        <div>
+                          <button id="applyFilterBtn" class="btn btn-primary">Apply Filters</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          {% for report in report_types %}
+                          <input
+                            type="radio"
+                            name="report_type"
+                            id="{{ report|slugify }}"
+                            class="with-gap"
+                            value="{{ report }}"
+                            {% if report == selected_report %}
+                            checked
+                            {% endif %}
+                          />
+                          <label for="{{ report|slugify }}" class="m-l-20">{{ report }}</label>
+                          <label class="form-label1">Report Type</label>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <div class="row clearfix">
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-pink hover-expand-effect">
+                      <div class="icon">
+                        <i class="material-icons">shopping_cart</i>
+                      </div>
+                      <div class="content">
+                        <div class="text">TOTAL PURCHASE</div>
+                        <div class="number count-to total-purchase" data-from="0" data-to="" data-speed="1000"
+                          data-fresh-interval="20"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-cyan hover-expand-effect">
+                      <div class="icon">
+                        <i class="material-icons">sell</i>
+                      </div>
+                      <div class="content">
+                        <div class="text">LOYALTY SALE</div>
+                        <div class="number count-to total-loyalty-sale" data-from="0" data-to="" data-speed="1000"
+                          data-fresh-interval="20"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-light-green hover-expand-effect">
+                      <div class="icon">
+                        <i class="material-icons">receipt</i>
+                      </div>
+                      <div class="content">
+                        <div class="text">TOTAL BILLS</div>
+                        <div class="number count-to total-bills" data-from="0" data-to=""
+                          data-speed="1000" data-fresh-interval="20"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-orange hover-expand-effect">
+                      <div class="icon">
+                        <i class="material-icons">loyalty</i>
+                      </div>
+                      <div class="content">
+                        <div class="text">LOYALTY BILLS</div>
+                        <div class="number count-to total-loyalty-bill" data-from="0" data-to=""
+                          data-speed="1000" data-fresh-interval="20"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-yellow hover-expand-effect">
+                      <div class="icon">
+                        <i class="material-icons">stars</i>
+                      </div>
+                      <div class="content">
+                        <div class="text">BURN POINTS</div>
+                        <div class="number count-to total-burn-points" data-from="0" data-to=""
+                          data-speed="1000" data-fresh-interval="20"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-orange hover-expand-effect">
+                      <div class="icon">
+                        <i class="material-icons">stores</i>
+                      </div>
+                      <div class="content">
+                        <div class="text">TOTAL LIVE STORES</div>
+                        <div class="number count-to total-live-stores" data-from="0" data-to=""
+                          data-speed="1000" data-fresh-interval="20"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-cyan hover-expand-effect">
+                      <div class="icon">
+                        <i class="material-icons">check_circle</i>
+                      </div>
+                      <div class="content">
+                        <div class="text">DATA RECEIVED</div>
+                        <div class="number count-to total-data-received" data-from="0" data-to=""
+                          data-speed="1000" data-fresh-interval="20"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-pink hover-expand-effect">
+                      <div class="icon">
+                        <i class="material-icons">receipt</i>
+                      </div>
+                      <div class="content">
+                        <div class="text">REPEAT BILLS</div>
+                        <div class="number count-to total-repeat-bills" data-from="0" data-to=""
+                          data-speed="1000" data-fresh-interval="20"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Table -->
+                <div class="table-responsive">
+                  <table id="data-table" class="table table-bordered table-striped">
+                    <thead class="bg-primary text-white">
+                      <tr>
+                        <th>Type</th>
+                        <th>Store Code</th>
+                        <th>Store Name</th>
+                        <th>Bill No.</th>
+                        <th>Bill Date</th>
+                        <th>Net Amount</th>
+                        <th>Customer</th>
+                        <th>Mobile</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+                <nav>
+                  <ul class="pagination" id="paginationControls"></ul>
+                </nav>              
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- #END# Customer Details Table -->
+      </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#zone").change(function () {
+          let zoneId = $(this).val();
+          let locationDropdown = $("#location2");
+    
+          if (zoneId) {
+            $.ajax({
+              url: "{% url 'analytics:GetLocationsByZone' %}", // Django URL
+              data: { zone_id: zoneId },
+              dataType: "json",
+              success: function (response) {
+                locationDropdown.empty();
+                locationDropdown.append('<option value="">-- Select Location --</option>');
+    
+                if (response.locations.length > 0) {
+                  response.locations.forEach(function (location) {
+                    locationDropdown.append(
+                      `<option value="${location.location_code}">${location.location_Name}</option>`
+                    );
+                  });
+                }
+              },
+            });
+          } else {
+            locationDropdown.empty().append('<option value="">-- Select Location --</option>');
+          }
+        });
+      });
+    </script>
+    
+    <script>
+      function updatePagination(currentPage, totalPages, newPageList, hasPrevious, hasNext) {
+        let paginationHtml = '';
+      
+        // First & Previous buttons
+        if (hasPrevious) {
+            paginationHtml += `<li><a href="javascript:void(0);" class="page-btn" data-page="1" aria-label="First"><span aria-hidden="true">First</span></a></li>`;
+            paginationHtml += `<li><a href="javascript:void(0);" class="page-btn" data-page="${currentPage - 1}" aria-label="Previous"><span aria-hidden="true">Previous</span></a></li>`;
+        }
+      
+        // Page number links
+        if (totalPages > 1) {
+            newPageList.forEach(page => {
+                let activeClass = currentPage === page ? "active" : "";
+                paginationHtml += `<li class="${activeClass}"><a href="javascript:void(0);" class="page-btn" data-page="${page}">${page}</a></li>`;
+            });
+        }
+      
+        // Next & Last buttons
+        if (hasNext) {
+            paginationHtml += `<li><a href="javascript:void(0);" class="page-btn" data-page="${currentPage + 1}" aria-label="Next"><span aria-hidden="true">Next</span></a></li>`;
+            paginationHtml += `<li><a href="javascript:void(0);" class="page-btn" data-page="${totalPages}" aria-label="Last"><span aria-hidden="true">Last</span></a></li>`;
+        }
+      
+        $("#paginationControls").html(paginationHtml);
+      }
+    
+      // Handle click event for pagination buttons
+      $(document).on("click", ".page-btn", function () {
+        let newPage = $(this).data("page");
+        fetchTableData(newPage);
+      });
+
+       // Apply Filter Button Click Event
+      $("#applyFilterBtn").click(function () {
+          fetchTableData();
+          fetchTotalsData();
+      });
+
+      let activeRequests = 0;
+
+      function hide() {
+          activeRequests--;
+          if (activeRequests <= 0) {
+            hideLoader();
+          }
+      }
+
+      function fetchTotalsData() {
+         let filters = {
+             start_date: $("#start_date").val(),
+             end_date: $("#end_date").val(),
+             location: $("#location2").val(),
+             zone: $("#zone").val(),
+         };
+         showLoader();
+         activeRequests++;
+         $.ajax({
+             url: "{% url 'analytics:GetLiveMonitorTotalData' %}",
+             data: filters,
+             dataType: "json",
+             method: "GET",
+             success: function (response) {
+                 console.log("Fetched Totals Data:", response);
+
+                 // Update Total Summary Cards
+
+                // Update Total Summary Cards
+                $(".total-purchase").attr("data-to", response.total_purchase);
+                $(".total-loyalty-sale").attr("data-to", response.total_loyalty_sale);
+                $(".total-bills").attr("data-to", response.total_bills);
+                $(".total-loyalty-bill").attr("data-to", response.total_loyalty_bill);
+                $(".total-burn-points").attr("data-to", response.total_burn_points);
+                $(".total-live-stores").attr("data-to", response.total_live_stores);
+                $(".total-data-received").attr("data-to", response.total_data_received);
+                $(".total-repeat-bills").attr("data-to", response.total_repeat_bills);
+                
+                // Reinitialize the count animation if needed
+                $(".count-to").each(function () {
+                    let $this = $(this);
+                    let to = $this.attr("data-to");
+                    $this.prop("Counter", 0).animate({
+                        Counter: to
+                    }, {
+                        duration: 1000,
+                        easing: 'swing',
+                        step: function (now) {
+                            $this.text(Math.ceil(now));
+                        }
+                    });
+                }); 
+             },
+             complete: hide
+         });
+         
+      }
+   
+      function fetchTableData(page = 1) {
+          let filters = {
+              start_date: $("#start_date").val(),
+              end_date: $("#end_date").val(),
+              location: $("#location2").val(),
+              page: page
+          };
+          
+          showLoader();
+          activeRequests++;
+          $.ajax({
+              url: "{% url 'analytics:GetLiveMonitorTableData' %}",
+              data: filters,
+              dataType: "json",
+              method: "GET",
+              success: function(response) {
+                  let tableBody = $("#data-table tbody");
+                  tableBody.empty();
+              
+                  if (response.data.length === 0) {
+                      tableBody.append("<tr><td colspan='8'>No data found.</td></tr>");
+                  } else {
+                      response.data.forEach(row => {
+                          var rowClass = '';
+                      
+                          // Apply row colors based on customer status
+                          if (row.customer_type === 'New') {
+                              rowClass = 'new';
+                          } else if (row.customer_type === 'Repeated') {
+                              rowClass = 'repeated';
+                          } else if (row.customer_type === 'Lost') {
+                              rowClass = 'lost';
+                          }
+                          let tr = `
+                              <tr class="${rowClass}">
+                                  <td>${row.customer_type}</td>
+                                  <td>${row.store_code}</td>
+                                  <td>${row.store_name}</td>
+                                  <td>${row.bill_number}</td>
+                                  <td>${row.bill_date}</td>
+                                  <td>${row.net_amount}</td>
+                                  <td>${row.customer}</td>
+                                  <td>${row.mobileno}</td>
+                              </tr>`;
+                          tableBody.append(tr);
+                      });
+                  }
+                
+                  // Update pagination
+                  let pagination = $(".pagination");
+                  pagination.empty();
+                
+                  updatePagination(response.page_no, response.total_pages, response.new_page_list, response.has_previous, response.has_next);
+              },
+              complete: hide
+          });
+          
+      }
+    
+      $(document).ready(function() {
+          console.log("AJAX CALL IS MADE")
+          fetchTableData();
+          fetchTotalsData();
+      });
+    </script>
+{% include "footer.html" %}

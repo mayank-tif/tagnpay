@@ -1,0 +1,215 @@
+{% include "header.html" %}
+
+    <section>
+
+      {% include "left_section.html" %}
+
+      <!-- #END# Right Sidebar -->
+    </section>
+
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Basic Validation -->
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+              <div class="header">
+                <h2>Issue Gift Voucher</h2>
+              </div>
+              <div align="center" height="50px;"><h6><font color="#FF0000">{{ message }}</font></h6></div>
+              <div class="body">
+                <form id="frmissuegiftvoucher" method="POST">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="tel"
+                            class="form-control"
+                            name="mobile_number"
+                            id="mobile_number"
+                            maxlength = "10"
+                            required
+                            oninvalid="this.setCustomValidity('Please enter a Mobile number')" 
+                            oninput="this.setCustomValidity('')"
+                          />
+                          <label class="form-label">Mobile Number</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="number"
+                            class="form-control"
+                            name="points"
+                            id="points"
+                            required
+                            readonly
+                          />
+                          <label class="form-label">Balance Points</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <select id="selcategory" name="selcategory" class="form-control" required oninvalid="this.setCustomValidity('Please select category')" 
+                          oninput="this.setCustomValidity('')">
+                            <option value="">-- Select Category --</option>
+                            {% for catdata in categoriesdta %}
+                            <option value="{{ catdata.category_id }}">{{ catdata.category_name }}</option>
+                            {% endfor %}
+                          </select>
+                          <label class="form-label1">Brand</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <select id="selbrand" name="selbrand" class="form-control" required oninvalid="this.setCustomValidity('Please select brand')" 
+                          oninput="this.setCustomValidity('')">
+                            <option value="">-- Select Brand --</option>
+                          </select>
+                          <label class="form-label1">Brand</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <select id="seldenomination" name="seldenomination" class="form-control" required oninvalid="this.setCustomValidity('Please select denomination')" 
+                          oninput="this.setCustomValidity('')">
+                            <option value="">-- Select GV Denomination --</option>
+                          </select>
+                          <label class="form-label1">GV Denomination</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <select id="gv_qty" name="gv_qty" class="form-control" required oninvalid="this.setCustomValidity('Please select GV Qty')" oninput="this.setCustomValidity('')">
+                            <option value="">-- Select GV Qty --</option>
+                            {% for i in "12345" %}
+                            <option value="{{i}}">{{i}}</option>
+                            {% endfor %}
+                          </select>
+                          <label class="form-label1">GV Qty</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="btn btn-primary waves-effect" type="submit" id="submitBtn">
+                    SUBMIT
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- #END# Basic Validation -->
+      </div>
+    </section>
+    <script>
+      $(document).ready(function () {
+        // Handle category selection
+        $('#mobile_number').change(function () {
+            const mobile = $(this).val();
+            const pts = $('#points');
+
+            // Clear the current brand options
+            //pts.empty().append('<option value="">Select Brand</option>');
+
+            if (mobile) {
+                $.ajax({
+                    url: "{% url 'GetCustomerPts' %}",
+                    method: "POST",
+                    headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                    data: {
+                        'mobileno': mobile
+                      },
+                    success: function (response) {
+                            document.getElementById("points").value = response.bal_points;
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching brands:', error);
+                        alert('Failed to load points. Please try again.');
+                    }
+                });
+            }
+        });
+      });
+      
+      $(document).ready(function () {
+        // Handle category selection
+        $('#selcategory').change(function () {
+            const categoryId = $(this).val();
+            const brandSelect = $('#selbrand');
+
+            // Clear the current brand options
+            brandSelect.empty().append('<option value="">Select Brand</option>');
+
+            if (categoryId) {
+                $.ajax({
+                    url: "{% url 'GetBrandsByCategory' %}",
+                    method: "POST",
+                    headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                    data: {
+                        'category_id': categoryId
+                      },
+                    success: function (data) {
+                        data.forEach(function (brnd) {
+                            brandSelect.append(`<option value="${brnd.id}">${brnd.rwrd_brand_name}</option>`);
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching brands:', error);
+                        alert('Failed to load brands. Please try again.');
+                    }
+                });
+            }
+        });
+      });
+
+      $(document).ready(function () {
+        // Handle category selection
+        $('#selbrand').change(function () {
+            const brandId = $(this).val();
+            const denominationSelect = $('#seldenomination');
+
+            // Clear the current brand options
+            denominationSelect.empty().append('<option value="">Select GV Denomination</option>');
+
+            if (brandId) {
+                $.ajax({
+                    url: "{% url 'GetBrandDenomination' %}",
+                    method: "POST",
+                    headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                    data: {
+                        'brand_id': brandId,
+                        'flag': 'RD'
+                      },
+                    success: function (data) {
+                        data.forEach(function (rwrdgv) {
+                          denominationSelect.append(`<option value="${rwrdgv.gv_points_value}">${rwrdgv.gv_value} (Points Value :${rwrdgv.gv_points_value})</option>`);
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching denomination:', error);
+                        alert('Failed to load denomination. Please try again.');
+                    }
+                });
+            }
+        });
+      });
+    </script>
+   
+    {% include "footer.html" %}

@@ -1,0 +1,182 @@
+{% include "header.html" %}
+   
+    <section>
+
+      {% include "left_section.html" %}
+
+      <!-- Right Sidebar -->
+
+      <!-- #END# Right Sidebar -->
+    </section>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Customer Details Table -->
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+              <div class="header">
+                <h2>Campaign ROI</h2>
+              </div>
+              <div class="body">
+                <!-- Filters -->
+                <div class="row">
+                  {% comment %} <form method="post">
+                    {% csrf_token %}
+                  <div class="col-md-3">
+                    <div class="form-group form-float">
+                      <div class="form-line">
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="start_date"
+                          name="start_date"
+                          value="{{start_date|date:'Y-m-d'}}"                        
+                        />
+                        <label class="form-label1">Start Date</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group form-float">
+                      <div class="form-line">
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="end_date"
+                          name="end_date"
+                          value="{{end_date|date:'Y-m-d'}}"
+                        />
+                        <label class="form-label1">End Date</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group form-float">
+                      <div class="form-line">
+                        <select name="location" id="location2" class="form-control">
+                          <option value="">-- Select Location --</option>
+                          {% for location in locations %}
+                              <option value="{{ location.location_id }}" {% if location.location_id|stringformat:"s" == selected_location|stringformat:"s" %}selected{% endif %}>
+                                  {{ location.location_Name }}
+                              </option>
+                          {% endfor %}
+                      </select>
+                       <label class="form-label1">Location</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group form-float">
+                      <div class="form-line">
+                        <select name="brand" id="brand" class="form-control">
+                          <option value="">-- Select Brand --</option>
+                          {% for brand in brands %}
+                              <option value="{{ brand.id }}" {% if brand.id|stringformat:"s" == selected_brand|stringformat:"s" %}selected{% endif %}>
+                                  {{ brand.rwrd_brand_name }}
+                              </option>
+                          {% endfor %}
+                      </select>
+                        <label class="form-label1">Brand</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group form-float">
+                      <div>
+                        <button type="submit" class="btn btn-primary">Apply Filters</button>
+                        
+                      </div>
+                    </div>
+                  </div>
+                </form> {% endcomment %}
+                </div>
+                <!-- Table -->
+                <div class="table-responsive">
+                  <div>
+                    <!-- Render the Plotly chart -->
+                    {{ graph_html|safe }}
+                  </div>
+                  
+                  <table class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th style="text-align:center; vertical-align:top;">S.No.</th>
+                        <th style="text-align:center; vertical-align:top;">Campaign Name</th>
+                        <th style="text-align:center; vertical-align:top;">Campaign Date</th>
+                        <th style="text-align:center; vertical-align:top;">Total Message Sent</th>
+                        <th style="text-align:center; vertical-align:top;">Campaign Cost</th>
+                        <th style="text-align:center; vertical-align:top;">Total Redemption</th>
+                        <th style="text-align:center; vertical-align:top;">Redemption %</th>
+                        <th style="text-align:center; vertical-align:top;">Sale against Campaign</th>
+                        
+                      </tr>
+                    </thead>  
+                    <tbody>
+                      <tr>
+                        <td>1</td>
+                        <td>EOSS Sale - Dec 2024</td>
+                        <td>2024-12-14</td>
+                        <td>540704</td>
+                        <td>70,291.5</td>
+                        <td>2401</td>
+                        <td>0.44%</td>
+                        <td>12,798,528.0</td>
+                      </tr>
+                      <tr>
+                        <td>2</td>
+                        <td>Christmas Campaign - Dec 2024</td>
+                        <td>2024-12-25</td>
+                        <td>289519</td>
+                        <td>37,637.5</td>
+                        <td>2056</td>
+                        <td>0.71%</td>
+                        <td>10,908,760.9</td>
+                      </tr>
+                      <tr>
+                        <td>3</td>
+                        <td>EOSS Sale - Dec 2024 - part 2</td>
+                        <td>2024-12-28</td>
+                        <td>540704</td>
+                        <td>70,291.5</td>
+                        <td>770</td>
+                        <td>0.14%</td>
+                        <td>3,574,149.1</td>
+                      </tr>
+                      <tr>
+                        <td>4</td>
+                        <td>New Year Campaign - Jan 2025</td>
+                        <td>2025-01-01</td>
+                        <td>63503</td>
+                        <td>8,255.4</td>
+                        <td>409</td>
+                        <td>0.64%</td>
+                        <td>1,056,101.3</td>
+                      </tr>
+                      <tr>
+                        <td colspan="3" align="right"><strong>Total</strong></td>
+                        <td><strong>1434430</strong></td>
+                        <td><strong>186475.90</strong></td>
+                        <td><strong>5636</strong></td>
+                        <td></td>
+                        <td><strong>2,83,37,539.30</strong></td>
+                      </tr>
+                      
+                    </tbody>
+                    
+
+
+                    
+                  </table>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- #END# Customer Details Table -->
+      </div>
+    </section>
+
+    
+{% include "footer.html" %}

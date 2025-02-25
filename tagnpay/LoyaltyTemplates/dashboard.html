@@ -1,0 +1,357 @@
+{% include "header.html" %}
+
+<section>
+
+  {% include "left_section.html" %}
+
+  <!-- Right Sidebar -->
+  <aside id="rightsidebar" class="right-sidebar">
+    <ul class="nav nav-tabs tab-nav-right" role="tablist">
+      <li role="presentation" class="active">
+        <a href="#skins" data-toggle="tab">SKINS</a>
+      </li>
+      <li role="presentation">
+        <a href="#settings" data-toggle="tab">SETTINGS</a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane fade in active in active" id="skins">
+        <ul class="demo-choose-skin">
+          <li data-theme="red" class="active">
+            <div class="red"></div>
+            <span>Red</span>
+          </li>
+          <li data-theme="pink">
+            <div class="pink"></div>
+            <span>Pink</span>
+          </li>
+          <li data-theme="purple">
+            <div class="purple"></div>
+            <span>Purple</span>
+          </li>
+          <li data-theme="deep-purple">
+            <div class="deep-purple"></div>
+            <span>Deep Purple</span>
+          </li>
+          <li data-theme="indigo">
+            <div class="indigo"></div>
+            <span>Indigo</span>
+          </li>
+          <li data-theme="blue">
+            <div class="blue"></div>
+            <span>Blue</span>
+          </li>
+          <li data-theme="light-blue">
+            <div class="light-blue"></div>
+            <span>Light Blue</span>
+          </li>
+          <li data-theme="cyan">
+            <div class="cyan"></div>
+            <span>Cyan</span>
+          </li>
+          <li data-theme="teal">
+            <div class="teal"></div>
+            <span>Teal</span>
+          </li>
+          <li data-theme="green">
+            <div class="green"></div>
+            <span>Green</span>
+          </li>
+          <li data-theme="light-green">
+            <div class="light-green"></div>
+            <span>Light Green</span>
+          </li>
+          <li data-theme="lime">
+            <div class="lime"></div>
+            <span>Lime</span>
+          </li>
+          <li data-theme="yellow">
+            <div class="yellow"></div>
+            <span>Yellow</span>
+          </li>
+          <li data-theme="amber">
+            <div class="amber"></div>
+            <span>Amber</span>
+          </li>
+          <li data-theme="orange">
+            <div class="orange"></div>
+            <span>Orange</span>
+          </li>
+          <li data-theme="deep-orange">
+            <div class="deep-orange"></div>
+            <span>Deep Orange</span>
+          </li>
+          <li data-theme="brown">
+            <div class="brown"></div>
+            <span>Brown</span>
+          </li>
+          <li data-theme="grey">
+            <div class="grey"></div>
+            <span>Grey</span>
+          </li>
+          <li data-theme="blue-grey">
+            <div class="blue-grey"></div>
+            <span>Blue Grey</span>
+          </li>
+          <li data-theme="black">
+            <div class="black"></div>
+            <span>Black</span>
+          </li>
+        </ul>
+      </div>
+      <div role="tabpanel" class="tab-pane fade" id="settings">
+        <div class="demo-settings">
+          <p>GENERAL SETTINGS</p>
+          <ul class="setting-list">
+            <li>
+              <span>Report Panel Usage</span>
+              <div class="switch">
+                <label><input type="checkbox" checked /><span class="lever"></span></label>
+              </div>
+            </li>
+            <li>
+              <span>Email Redirect</span>
+              <div class="switch">
+                <label><input type="checkbox" /><span class="lever"></span></label>
+              </div>
+            </li>
+          </ul>
+          <p>SYSTEM SETTINGS</p>
+          <ul class="setting-list">
+            <li>
+              <span>Notifications</span>
+              <div class="switch">
+                <label><input type="checkbox" checked /><span class="lever"></span></label>
+              </div>
+            </li>
+            <li>
+              <span>Auto Updates</span>
+              <div class="switch">
+                <label><input type="checkbox" checked /><span class="lever"></span></label>
+              </div>
+            </li>
+          </ul>
+          <p>ACCOUNT SETTINGS</p>
+          <ul class="setting-list">
+            <li>
+              <span>Offline</span>
+              <div class="switch">
+                <label><input type="checkbox" /><span class="lever"></span></label>
+              </div>
+            </li>
+            <li>
+              <span>Location Permission</span>
+              <div class="switch">
+                <label><input type="checkbox" checked /><span class="lever"></span></label>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <!-- #END# Right Sidebar -->
+</section>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="block-header">
+      <h2>DASHBOARD</h2>
+    </div>
+
+    <!-- Widgets -->
+    <div class="row clearfix">
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box bg-pink hover-expand-effect">
+          <div class="icon">
+            <i class="material-icons">person_add</i>
+          </div>
+          <div class="content">
+            <div class="text">TOTAL CUSTOMERS</div>
+            <div class="number count-to" data-from="0" data-to="{{total_customers}}" data-speed="1000"
+              data-fresh-interval="20"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box bg-cyan hover-expand-effect">
+          <div class="icon">
+            <i class="material-icons">playlist_add_check</i>
+          </div>
+          <div class="content">
+            <div class="text">TOTAL LOCATIONS</div>
+            <div class="number count-to" data-from="0" data-to="{{total_locations}}" data-speed="1000"
+              data-fresh-interval="20"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box bg-light-green hover-expand-effect">
+          <div class="icon">
+            <i class="material-icons">forum</i>
+          </div>
+          <div class="content">
+            <div class="text">EARN VALUE</div>
+            <div class="number count-to" data-from="0" data-to="{{earn_points_total|default_if_none:" 0"}}"
+              data-speed="1000" data-fresh-interval="20"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box bg-orange hover-expand-effect">
+          <div class="icon">
+            <i class="material-icons">playlist_add_check</i>
+          </div>
+          <div class="content">
+            <div class="text">REDEEM VALUE</div>
+            <div class="number count-to" data-from="0" data-to="{{redeem_points_total|default_if_none:" 0"}}"
+              data-speed="1000" data-fresh-interval="20"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- #END# Widgets -->
+
+    <div class="row clearfix">
+      <!-- Visitors -->
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="card">
+          <div class="header">
+            <h2 class="font-bold">Reward Desk</h2>
+          </div>
+          <div class="body bg-red">
+            <p>
+              Reward desk executives can register new customers, add new customer bills, issue rewards, check customer
+              and brand details.<br /><br /><br /><br /><br /><br /><br />
+            </p>
+            <div class="text-right">
+              <a href="{% url 'CustomerSearch' %}" class="btn btn-default">
+                <i class="fa fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- #END# Visitors -->
+      <!-- Latest Social Trends -->
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="card">
+          <div class="header">
+            <h2 class="font-bold">Analytics</h2>
+          </div>
+          <div class="body bg-cyan">
+            <p>
+              Analytics refers to the process of collecting, analyzing, and interpreting data from mall customers
+              loyalty programs to gain insights into customer behavior, program effectiveness, and overall business
+              performance. By examining how customers interact with a mall's loyalty offerings, businesses can optimize
+              their programs to increase customer retention, improve sales, and enhance customer satisfaction.
+            </p>
+            <div class="text-right">
+              <a href="{% url 'analytics:CustomersByLocation' %}" class="btn btn-default">
+                <i class="fa fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Include Font Awesome for the arrow icon and Bootstrap JS for button styling -->
+      <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+      <!-- #END# Latest Social Trends -->
+      <!-- Answered Tickets -->
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="card">
+          <div class="header">
+            <h2 class="font-bold">Settings</h2>
+          </div>
+          <div class="body bg-cyan">
+            <p>
+              Settings to configure the complete mall loyalty program to set up all configurations like platform
+              settings, loyalty logic, location master, categories master, brands master and rewards stock and other
+              important masters etc.<br /><br /><br /><br /><br />
+            </p>
+            <div class="text-right">
+              <a href="{% url 'ProgramSetup' %}" class="btn btn-default">
+                <i class="fa fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- #END# Answered Tickets -->
+      <!-- Answered Tickets -->
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="card">
+          <div class="header">
+            <h2 class="font-bold">Support Desk</h2>
+          </div>
+          <div class="body bg-cyan">
+            <p>
+              Support Desk to perform L1 support activities. Manage Locations, Categories, brands, rewards, customer
+              activities like update, merge customer mobile numbers, and many more activities related to reward stock
+              and customers.<br /><br /><br /><br /><br />
+            </p>
+            <div class="text-right">
+              <a href="#" class="btn btn-default">
+                <i class="fa fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- #END# Answered Tickets -->
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- Jquery Core Js -->
+<script src="/static/plugins/jquery/jquery.min.js"></script>
+
+<!-- Bootstrap Core Js -->
+<script src="/static/plugins/bootstrap/js/bootstrap.js"></script>
+
+<!-- Select Plugin Js -->
+<script src="/static/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+<!-- Slimscroll Plugin Js -->
+<script src="/static/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+<!-- Waves Effect Plugin Js -->
+<script src="/static/plugins/node-waves/waves.js"></script>
+
+<!-- Jquery CountTo Plugin Js -->
+<script src="/static/plugins/jquery-countto/jquery.countTo.js"></script>
+
+<!-- Morris Plugin Js -->
+<script src="/static/plugins/raphael/raphael.min.js"></script>
+<script src="/static/plugins/morrisjs/morris.js"></script>
+
+<!-- ChartJs -->
+<script src="/static/plugins/chartjs/Chart.bundle.js"></script>
+
+<!-- Flot Charts Plugin Js -->
+<script src="/static/plugins/flot-charts/jquery.flot.js"></script>
+<script src="/static/plugins/flot-charts/jquery.flot.resize.js"></script>
+<script src="/static/plugins/flot-charts/jquery.flot.pie.js"></script>
+<script src="/static/plugins/flot-charts/jquery.flot.categories.js"></script>
+<script src="/static/plugins/flot-charts/jquery.flot.time.js"></script>
+
+<!-- Sparkline Chart Plugin Js -->
+<script src="/static/plugins/jquery-sparkline/jquery.sparkline.js"></script>
+
+<!-- Custom Js -->
+<script src="/static/js/admin.js"></script>
+<script src="/static/js/pages/index.js"></script>
+
+<!-- Demo Js -->
+<script src="/static/js/demo.js"></script>
+</body>
+
+</html>

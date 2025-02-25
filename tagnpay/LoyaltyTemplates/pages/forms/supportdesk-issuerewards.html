@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+      name="viewport"
+    />
+    <title>
+      Form Validation | Bootstrap Based Admin Template - Material Design
+    </title>
+    <!-- Favicon-->
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <!-- Bootstrap Core Css -->
+    <link href="../../plugins/bootstrap/css/bootstrap.css" rel="stylesheet" />
+
+    <!-- Waves Effect Css -->
+    <link href="../../plugins/node-waves/waves.css" rel="stylesheet" />
+
+    <!-- Animation Css -->
+    <link href="../../plugins/animate-css/animate.css" rel="stylesheet" />
+
+    <!-- Sweet Alert Css -->
+    <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+
+    <!-- Custom Css -->
+    <link href="../../css/style.css" rel="stylesheet" />
+
+    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link href="../../css/themes/all-themes.css" rel="stylesheet" />
+    <style>
+      .form-container {
+        margin-top: 20px;
+      }
+      .form-actions {
+        margin: 20px 0px 20px 00px;
+      }
+
+      .form-actions btn {
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+
+  <body class="theme-red">
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+      <div class="loader">
+        <div class="preloader">
+          <div class="spinner-layer pl-red">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+        <p>Please wait...</p>
+      </div>
+    </div>
+    <!-- #END# Page Loader -->
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <div class="search-icon">
+        <i class="material-icons">search</i>
+      </div>
+      <input type="text" placeholder="START TYPING..." />
+      <div class="close-search">
+        <i class="material-icons">close</i>
+      </div>
+    </div>
+    <!-- #END# Search Bar -->
+    <!-- Top Bar -->
+    <nav class="navbar">
+      <div class="container-fluid">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+         <div class="navbar-header">
+          <a
+            href="javascript:void(0);"
+            class="navbar-toggle collapsed"
+            data-toggle="collapse"
+            data-target="#navbar-collapse"
+            aria-expanded="false"
+          ></a>
+          <a href="javascript:void(0);" class="bars"></a>
+          <div class="logo">
+            <img src="../../images/logo-fundle.png" alt="" height="30px" />
+          </div>
+        </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="navbar-header-right">
+           <a
+             href="javascript:void(0);"
+             class="navbar-toggle collapsed"
+             data-toggle="collapse"
+             data-target="#navbar-collapse"
+             aria-expanded="false"
+           ></a>
+           <a href="javascript:void(0);" class="bars"></a>
+           <div class="logo">
+             <img src="../../images/brandlogoo.png" alt="" height="30px" />
+           </div>
+         </div>
+         </div>
+      </div>
+    </nav>
+    <!-- #Top Bar -->
+    <section>
+      <!-- Left Sidebar -->
+      <aside id="leftsidebar" class="sidebar">
+        <!-- User Info -->
+        <div class="user-info">
+          <div class="image">
+            <img
+              src="../../images/user.png"
+              width="48"
+              height="48"
+              alt="User"
+            />
+          </div>
+          <div class="info-container">
+            <div
+              class="name"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              John Doe
+            </div>
+            <div class="email">john.doe@example.com</div>
+            <div class="btn-group user-helper-dropdown">
+              <i
+                class="material-icons"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="true"
+                >keyboard_arrow_down</i
+              >
+              <ul class="dropdown-menu pull-right">
+                <li>
+                  <a href="javascript:void(0);"
+                    ><i class="material-icons">person</i>Profile</a
+                  >
+                </li>
+                <li role="separator" class="divider"></li>
+
+                <li>
+                  <a href="javascript:void(0);"
+                    ><i class="material-icons">input</i>Sign Out</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- #User Info -->
+        <!-- Menu -->
+        <div class="menu">
+          <ul class="list">
+            <li class="header">MAIN NAVIGATION</li>
+            <li>
+              <a href="../../dashboard.html">
+                <i class="material-icons">home</i>
+                <span>Home</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="javascript:void(0);" class="menu-toggle">
+                <i class="material-icons">widgets</i>
+                <span>Rewards Desk</span>
+              </a>
+              <ul class="ml-menu">
+                <li>
+                  <a href="/pages/forms/registration-form.html">Registration</a>
+                </li>
+                <li >
+                  <a href="enter-bill.html">Enter Bill</a>
+                </li>
+                <li>
+                  <a href="voucher-insurance.html">Voucher Insurance</a>
+                </li>
+                <li>
+                  <a href="pages/forms/brand-search.html">Brand Search</a>
+                </li>
+                <li>
+                  <a href="pages/forms/customer-search.html">Customer Search</a>
+                </li>
+                <li>
+                  <a href="customer-details.html">View Customer Details</a>
+                </li>
+              </ul>
+            </li>
+
+            <li>
+              <a href="javascript:void(0);" class="menu-toggle">
+                <i class="material-icons">widgets</i>
+                <span>Analytics</span>
+              </a>
+              <ul class="ml-menu">
+                <li>
+                  <a href="pages/widgets/cards/basic.html">Pending bills</a>
+                </li>
+                <li>
+                  <a href="analytics-stock-report.html"
+                    >Rewards Desk Stock Report</a
+                  >
+                </li>
+                <li>
+                  <a href="analytics-customer-details.html">Customer details</a>
+                </li>
+                <li>
+                  <a href="analytics-voucher-insurance-report.html"
+                    >Voucher Insurance report</a
+                  >
+                </li>
+                <li>
+                  <a href="analytics-transaction-report.html"
+                    >Transaction Report</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+             <li>
+              <a href="javascript:void(0);" class="menu-toggle">
+                <i class="material-icons">widgets</i>
+                <span>Config Settings</span>
+              </a>
+              <ul class="ml-menu">
+                
+               
+                    <li>
+                      <a href="logic-configuration.html">Logic configuration</a>
+                    </li>
+                    <li>
+                      <a href="data-uploads.html">Data uploads</a>
+                    </li>
+              
+                </li>
+              </ul>
+            </li>
+
+            <li class="active">
+              <a href="javascript:void(0);" class="menu-toggle">
+                <i class="material-icons">widgets</i>
+                <span>Support Desk</span>
+              </a>
+              <ul class="ml-menu">
+                
+                    <li>
+                      <a href="supportdesk-uploadcategory.html"
+                        >Upload Category</a
+                      >
+                    </li>
+                    <li>
+                      <a href="supportdesk-uploadbrand.html">Upload Brand</a>
+                    </li>
+                    <li>
+                      <a href="supportdesk-importvouchers.html"
+                        >Import Vouchers</a
+                      >
+                    </li>
+                    <li>
+                      <a href="supportdesk-vouchermaster.html">Import Stock</a>
+                    </li>
+                    <li class="active">
+                      <a href="supportdesk-issuerewards.html"
+                        >Issue Rewards desk stock</a
+                      >
+                    </li>
+                    <li>
+                      <a href="supportdesk-expiry-extendvouchers.html"
+                        >Extend Expiry vouchers</a
+                      >
+                    </li>
+                    <li>
+                      <a href="supportdesk-updatebill.html">Update bill</a>
+                    </li>
+             
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <!-- #Menu -->
+        <!-- Footer -->
+        <div class="legal">
+          <div class="copyright">
+            &copy; 2016 - 2017
+            <a href="javascript:void(0);">Fundle mall Loyalty Program.</a>.
+          </div>
+          <div class="version"><b>Version: </b> 1.0.5</div>
+        </div>
+        <!-- #Footer -->
+      </aside>
+      <!-- #END# Left Sidebar -->
+
+      <!-- #END# Right Sidebar -->
+    </section>
+
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Basic Validation -->
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+              <div class="header">
+                <h2>Issue Rewards Desk Stock</h2>
+              </div>
+              <div class="body">
+                <form id="form_validation" method="POST">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="category"
+                            required
+                          />
+                          <label class="form-label">Category</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="brand"
+                            required
+                          />
+                          <label class="form-label">Brand</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="number"
+                            class="form-control"
+                            name="denomination"
+                            required
+                          />
+                          <label class="form-label">Denomination</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="number"
+                            class="form-control"
+                            name="quantity"
+                            required
+                          />
+                          <label class="form-label">Quantity</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="number"
+                            class="form-control"
+                            name="total"
+                            required
+                          />
+                          <label class="form-label">Total</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-actions">
+                    <button
+                      type="button"
+                      class="btn btn-success"
+                      onclick="saveStock()"
+                    >
+                      Save
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      onclick="editStock()"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      onclick="deactivateStock()"
+                    >
+                      Deactivate
+                    </button>
+                  </div>
+
+                  <button class="btn btn-primary waves-effect" type="submit">
+                    SUBMIT
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      document
+        .getElementById("voucher_image")
+        .addEventListener("change", function (event) {
+          const reader = new FileReader();
+          reader.onload = function (event) {
+            const imgElement = document.getElementById("image_preview");
+            imgElement.src = event.target.result;
+            imgElement.style.display = "block";
+          };
+          reader.readAsDataURL(event.target.files[0]);
+        });
+
+      function saveVoucher() {
+        // Add save functionality here
+        alert("Voucher saved successfully!");
+      }
+
+      function editVoucher() {
+        // Add edit functionality here
+        alert("Edit voucher functionality!");
+      }
+
+      function deactivateVoucher() {
+        // Add deactivate functionality here
+        alert("Voucher deactivated!");
+      }
+    </script>
+
+    <!-- Jquery Core Js -->
+    <script src="../../plugins/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core Js -->
+    <script src="../../plugins/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Select Plugin Js -->
+    <script src="../../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+    <!-- Slimscroll Plugin Js -->
+    <script src="../../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+    <!-- Jquery Validation Plugin Css -->
+    <script src="../../plugins/jquery-validation/jquery.validate.js"></script>
+
+    <!-- JQuery Steps Plugin Js -->
+    <script src="../../plugins/jquery-steps/jquery.steps.js"></script>
+
+    <!-- Sweet Alert Plugin Js -->
+    <script src="../../plugins/sweetalert/sweetalert.min.js"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="../../plugins/node-waves/waves.js"></script>
+
+    <!-- Custom Js -->
+    <script src="../../js/admin.js"></script>
+    <script src="../../js/pages/forms/form-validation.js"></script>
+
+    <!-- Demo Js -->
+    <script src="../../js/demo.js"></script>
+  </body>
+</html>

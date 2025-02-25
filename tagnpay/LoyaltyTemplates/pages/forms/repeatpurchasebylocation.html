@@ -1,0 +1,527 @@
+{% include "header.html" %}
+   
+    <section>
+
+      {% include "left_section.html" %}
+
+      <!-- Right Sidebar -->
+
+      <!-- #END# Right Sidebar -->
+    </section>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Customer Details Table -->
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+              <div class="header">
+                <h2>Repeat Purchase by {{selected_report}}</h2>
+                <button class="btn waves-effect btn-success" id="exportData" type="button" id="importbutton" style="float: right;">Export</button>
+              </div>
+              <div class="body">
+                <!-- Filters -->
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="start_date"
+                            name="start_date"
+                            value="{{start_date|date:'Y-m-d'}}"                        
+                          />
+                          <label class="form-label1">Start Date</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="end_date"
+                            name="end_date"
+                            value="{{end_date|date:'Y-m-d'}}"
+                          />
+                          <label class="form-label1">End Date</label>
+                        </div>
+                      </div>
+                    </div>
+                    {% comment %}<div class="col-md-3">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <select name="reports" id="reports1" class="form-control">
+                            <option value="">-- Select --</option>
+                            {% for report in reports %}
+                                <option value="{{ report }}" {% if report == selected_report %}selected{% endif %}>
+                                    {{ report }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                         <label class="form-label1">Filters</label>
+                        </div>
+                      </div>
+                    </div>{% endcomment %}
+                    {% comment %}<div class="col-md-3">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <select name="brand" id="brand" class="form-control">
+                            <option value="">-- Select Brand --</option>
+                            {% for brand in brands %}
+                                <option value="{{ brand.id }}" {% if brand.id|stringformat:"s" == selected_brand|stringformat:"s" %}selected{% endif %}>
+                                    {{ brand.rwrd_brand_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                          <label class="form-label1">Brand</label>
+                        </div>
+                      </div>
+                    </div>{% endcomment %}
+                    <div class="col-md-3">
+                      <div class="form-group form-float">
+                        <div>
+                          <button id="applyFilterBtn" class="btn btn-primary">Apply Filters</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          {% for report in report_types %}
+                          <input
+                            type="radio"
+                            name="report_type"
+                            id="{{ report|slugify }}"
+                            class="with-gap"
+                            value="{{ report }}"
+                            {% if report == selected_report %}
+                            checked
+                            {% endif %}
+                          />
+                          <label for="{{ report|slugify }}" class="m-l-20">{{ report }}</label>
+                          <label class="form-label1">Report Type</label>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <!-- Table -->
+                <div class="table-responsive">
+                  <div class="graph">
+                    <!-- Render the Plotly chart -->
+                    
+                  </div>
+                  <table class="table table-bordered table-striped">
+                    <thead style="background-color: #a0abb6;">
+                      <tr>
+                        <th rowspan="3" style="text-align:center; vertical-align:top;">S.No.</th>
+                        <th rowspan="3" style="text-align:center; vertical-align:top;">{{selected_report}}</th>
+                        <th rowspan="2" colspan="3" style="text-align:center; vertical-align:top;">Purchase</th>
+                        <th colspan="9" style="text-align:center; vertical-align:top;">Repeat Purchase</th>
+                      </tr>
+                      <tr>
+                        <th colspan="3" style="text-align:center; vertical-align:middle;">Total</th>
+                        <th colspan="3" style="text-align:center; vertical-align:middle;">Current</th>
+                        <th colspan="3" style="text-align:center; vertical-align:middle;">Earlier</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align:center; vertical-align:middle;">Unique Loyalty Customers</th>
+                        <th style="text-align:center; vertical-align:middle;">Total Loyalty Bills</th>
+                        <th style="text-align:center; vertical-align:middle;">Total Loyalty Purchase</th>
+                        <th>Unique Customers</th>
+                        <th>Total Bills</th>
+                        <th>Repeat Loyalty Purchase</th>
+                        <th>Unique Customers</th>
+                        <th>Total Bills</th>
+                        <th>Repeat Loyalty Purchase</th>
+                        <th>Unique Customers</th>
+                        <th>Total Bills</th>
+                        <th>Repeat Loyalty Purchase</th>
+                      </tr>
+                    </thead>
+                      <tbody>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- #END# Customer Details Table -->
+      </div>
+      <!-- Date Validation Modal -->
+      <div class="modal fade" id="dateValidationModal" tabindex="-1" aria-labelledby="dateValidationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="dateValidationModalLabel">Invalid Date Range</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Start date cannot be greater than the end date. Please select a valid date range.
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="customerDetailsModal" tabindex="-1" aria-labelledby="customerDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <input id="source_category" type="hidden" value="">
+              <input id="transaction_type" type="hidden" value="">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="customerDetailsModalLabel">Customer Details</h5>
+                    <div style="float: right; display: flex; gap: 10px;">
+                      <button id="exportRepeatTransactionDetailData" class="btn btn-primary">Export</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                <div class="modal-filters d-flex justify-content-center align-items-center gap-2 mb-3 modal-row">
+                  <div class="col-md-3">
+                    <div class="form-group form-float">
+                      <div class="form-line">
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="modal_start_date"                       
+                        />
+                        <label class="form-label1">Start Date</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group form-float">
+                      <div class="form-line">
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="modal_end_date"
+                        />
+                        <label class="form-label1">End Date</label>
+                      </div>
+                    </div>
+                  </div>
+                  <button id="applyDateFilter" class="btn btn-primary">Apply</button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <thead></thead>
+                        <tbody id="customerDetailsBody">
+                            <!-- Data will be inserted dynamically here -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                  <div id="paginationControls" class="d-flex text-center">
+                    <nav>
+                        <ul class="pagination" id="paginationContainer"></ul>
+                    </nav>
+                  </div>
+               </div>
+            </div>
+        </div>
+    </div>
+    </section>
+    <script>
+          const startDateInput = document.getElementById("start_date");
+          const endDateInput = document.getElementById("end_date");
+          let previousReportType = document.querySelector("input[name='report_type']:checked").value;
+      
+          function isDateValid() {
+              const startDate = startDateInput.value ? new Date(startDateInput.value) : null;
+              const endDate = endDateInput.value ? new Date(endDateInput.value) : null;
+      
+              if (startDate && endDate && startDate > endDate) {
+                  $("#dateValidationModal").modal("show");
+                  return false; // Invalid dates
+              }
+              return true; // Valid dates
+          }
+      
+          // Handle report type change
+          document.querySelectorAll("input[name='report_type']").forEach(input => {
+              input.addEventListener("change", function (event) {
+                  if (!isDateValid()) {
+                      event.preventDefault(); // Stop change
+                      this.checked = false; // Uncheck the new selection
+                      document.querySelector(`input[value='${previousReportType}']`).checked = true; // Restore old selection
+                      return;
+                  }
+      
+                  previousReportType = this.value; // Save new selection
+                  fetchTotalsData(); // Submit only if valid
+              });
+          });
+    </script>
+    <script>
+      $(document).ready(function () {
+          $("#exportData").click(function () {
+            showLoader();
+            let start_date = $("#start_date").val();
+            let end_date = $("#end_date").val();
+            let report_type = $("input[name='report_type']:checked").val();
+    
+            // Create a hidden form dynamically
+            let form = $('<form>', {
+                action: "{% url 'analytics:ExportRepeatTransbyLocSummary' %}",  
+                method: "GET"
+            });
+    
+            // Add CSRF token
+            form.append('{% csrf_token %}');
+    
+            // Append filter values
+            form.append($('<input>').attr({type: "hidden", name: "start_date", value: start_date}));
+            form.append($('<input>').attr({type: "hidden", name: "end_date", value: end_date}));
+            form.append($('<input>').attr({type: "hidden", name: "report_type", value: report_type}));
+    
+            // Append form to body, submit, and remove it after submission
+            $("body").append(form);
+            form.submit();
+            form.remove();
+            setTimeout(hideLoader, 2000);
+          });
+      });
+    </script>
+    <script>
+      // Apply Filter Button Click Event
+      $("#applyFilterBtn").click(function () {
+        isDateValid();
+        fetchTotalsData();
+      });
+
+      // Open modal and fetch data when customer count is clicked
+      $(document).on("click", ".clickable-customer", function () {
+        let startDate = $("#start_date").val();
+        let endDate = $("#end_date").val();
+        let category = $(this).data("category");
+        let transactionType = $(this).data("type");
+        
+        // Set modal filters initially from outer filters
+        $("#modal_start_date").val(startDate);
+        $("#modal_end_date").val(endDate);
+        $("#customerDetailsModal").find("#source_category").val(category);
+        $("#customerDetailsModal").find("#transaction_type").val(transactionType);
+
+        currentPage = 1;  // Reset to page 1 on new selection
+        fetchCustomerRepeatTransactionDetailData(startDate, endDate, currentPage, category, transactionType);
+      });
+
+      let activeRequests = 0;
+
+      function hide() {
+          activeRequests--;
+          if (activeRequests <= 0) {
+            hideLoader();
+          }
+      }
+
+      function fetchTotalsData() {
+        let filters = {
+            start_date: $("#start_date").val(),
+            end_date: $("#end_date").val(),
+            report_type: $("input[name='report_type']:checked").val()
+        };
+        showLoader();
+        activeRequests++;
+        $.ajax({
+            url: "{% url 'analytics:GetRepeatTransactionsSummaryData' %}",
+            data: filters,
+            dataType: "json",
+            method: "GET",
+            success: function (response) {
+                console.log("Fetched Totals Data:", response);
+                $(".graph").html(response.graph_html);
+                $(".table tbody").empty();
+                if (response.result.length > 0) {
+                  response.result.forEach(function (item, index) {
+                      let row = `
+                          <tr>
+                              <td>${index + 1}</td>
+                              <td>${item.category}</td>
+                              <td class="clickable-customer" data-category="${item.category}" data-type="total"><u>${item.unique_customers || 0}</u></td>
+                              <td class="clickable-customer" data-category="${item.category}" data-type="total"><u>${item.total_bills || 0}</u></td>
+                              <td class="clickable-customer" data-category="${item.category}" data-type="total"><u>${item.tot_purchase || 0}</u></td>
+      
+                              <td class="clickable-customer" data-category="${item.category}" data-type="total_repeat"><u>${item.total_unique_repeat_customers || 0}</u></td>
+                              <td class="clickable-customer" data-category="${item.category}" data-type="total_repeat"><u>${item.total_repeat_trans || 0}</u></td>
+                              <td class="clickable-customer" data-category="${item.category}" data-type="total_repeat"><u>${item.total_repeat_trans_amount || 0}</u></td>
+      
+                              <td class="clickable-customer" data-category="${item.category}" data-type="current"><u>${item.total_unique_current_repeat_cust || 0}</u></td>
+                              <td class="clickable-customer" data-category="${item.category}" data-type="current"><u>${item.total_current_repeat_trans || 0}</u></td>
+                              <td class="clickable-customer" data-category="${item.category}" data-type="current"><u>${item.total_current_repeat_trans_amount || 0}</u></td>
+      
+                              <td class="clickable-customer" data-category="${item.category}" data-type="earlier"><u>${item.total_earlier_repeat_customers || 0}</u></td>
+                              <td class="clickable-customer" data-category="${item.category}" data-type="earlier"><u>${item.total_earlier_repeat_trans || 0}</u></td>
+                              <td class="clickable-customer" data-category="${item.category}" data-type="earlier"><u>${item.total_earlier_repeat_trans_amount || 0}</u></td>
+                          </tr>
+                      `;
+                      $(".table tbody").append(row);
+                  });
+              } else {
+                  // Show "No data found" if there's no data
+                  let emptyRow = `<tr><td colspan="13">No data found.</td></tr>`;
+                  $(".table tbody").append(emptyRow);
+              }
+            },
+            complete: hide
+        });
+     }
+
+      function updatePagination(currentPage, totalPages, newPageList, hasPrevious, hasNext) {
+        let paginationHtml = '<ul class="pagination">';
+    
+        // First & Previous buttons
+        if (hasPrevious) {
+            paginationHtml += `<li><a href="javascript:void(0);" class="page-btn" data-page="1" aria-label="First"><span aria-hidden="true">First</span></a></li>`;
+            paginationHtml += `<li><a href="javascript:void(0);" class="page-btn" data-page="${currentPage - 1}" aria-label="Previous"><span aria-hidden="true">Previous</span></a></li>`;
+        }
+    
+        // Page number links
+        if (totalPages > 1) {
+            newPageList.forEach(page => {
+                let activeClass = currentPage === page ? "active" : "";
+                paginationHtml += `<li class="${activeClass}"><a href="javascript:void(0);" class="page-btn" data-page="${page}">${page}</a></li>`;
+            });
+        }
+    
+        // Next & Last buttons
+        if (hasNext) {
+            paginationHtml += `<li><a href="javascript:void(0);" class="page-btn" data-page="${currentPage + 1}" aria-label="Next"><span aria-hidden="true">Next</span></a></li>`;
+            paginationHtml += `<li><a href="javascript:void(0);" class="page-btn" data-page="${totalPages}" aria-label="Last"><span aria-hidden="true">Last</span></a></li>`;
+        }
+    
+        paginationHtml += '</ul>';
+        $("#paginationControls").html(paginationHtml);
+    }
+    
+      // Handle click event for pagination buttons
+      $(document).on("click", ".page-btn", function () {
+        let newPage = $(this).data("page");
+        let startDate = $("#modal_start_date").val();
+        let endDate = $("#modal_end_date").val();
+        let transactionType = $("#customerDetailsModal").find("#point_type").val();
+        fetchCustomerRepeatTransactionDetailData(startDate, endDate, newPage, transactionType);
+      });
+
+      let currentPage = 1;
+
+      // Function to fetch customer data with pagination
+      function fetchCustomerRepeatTransactionDetailData(startDate, endDate, page, category, transactionType) {
+        let csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+        let reportType = $("input[name='report_type']:checked").val();
+    
+        showLoader();
+        activeRequests++;
+        $.ajax({
+            url: "{% url 'analytics:CustomerRepeatTransactionDetailData' %}",
+            type: "GET",
+            data: {
+                category: category,
+                report_type: reportType,
+                start_date: startDate,
+                end_date: endDate,
+                page: page,
+                transaction_type: transactionType,  // Earn or Redeem
+                csrfmiddlewaretoken: csrfToken
+            },
+            success: function (response) {
+                let tbody = $("#customerDetailsBody");
+                let thead = $("#customerDetailsBody").closest("table").find("thead");
+                tbody.empty();
+    
+                if (response.data.length === 0) {
+                    tbody.append("<tr><td colspan='5' class='text-center'>No customers found</td></tr>");
+                } else {
+                    let columns = [
+                        { key: "mobileno", label: "Mobile No" },
+                        { key: "bill_number", label: "Bill Number" },
+                        { key: "bill_date", label: "Bill Date" },
+                        { key: "bill_status", label: "Bill Status" }
+                    ];
+    
+                    let headerHtml = "<tr><th>S.No</th>";
+                    columns.forEach(col => {
+                        headerHtml += `<th>${col.label}</th>`;
+                    });
+                    headerHtml += "</tr>";
+                    thead.html(headerHtml);
+    
+                    data = response.data;
+                    let pageSize = 50;
+                    data.forEach((transaction, index) => {
+                        let serialNo = (page - 1) * pageSize + index + 1;
+                        let billDate = transaction.bill_date 
+                            ? new Date(transaction.bill_date).toLocaleDateString('en-GB', { 
+                                day: '2-digit', month: 'short', year: 'numeric' 
+                              })
+                            : 'N/A';
+    
+                        let rowHtml = `<tr><td>${serialNo}</td>`;
+                        columns.forEach(col => {
+                            rowHtml += `<td>${col.key === 'bill_date' ? billDate : (transaction[col.key] || '')}</td>`;
+                        });
+                        rowHtml += "</tr>";
+                        tbody.append(rowHtml);
+                    });
+    
+                    updatePagination(response.page_no, response.total_pages, response.new_page_list, response.has_previous, response.has_next);
+                    currentPage = response.page_no;
+                }
+                $("#customerDetailsModal").modal("show");
+            },
+            error: function () {
+                alert("Failed to fetch data.");
+            },
+            complete: hide
+        });
+        
+      }
+
+      // Apply button inside modal to update date filters and fetch data
+      $("#applyDateFilter").click(function () {
+          let startDate = $("#modal_start_date").val();
+          let endDate = $("#modal_end_date").val();
+          currentPage = 1; // Reset to first page
+          let category = $("#customerDetailsModal").find("#source_category").val();
+          let transactionType = $("#customerDetailsModal").find("#transaction_type").val();
+          fetchCustomerRepeatTransactionDetailData(startDate, endDate, currentPage, category, transactionType);
+      });
+
+      // Export Data Button
+      $("#exportRepeatTransactionDetailData").click(function () {
+        let startDate = $("#modal_start_date").val();
+        let endDate = $("#modal_end_date").val();
+        let category = $("#customerDetailsModal").find("#source_category").val();
+        let transactionType = $("#customerDetailsModal").find("#transaction_type").val();
+        let reportType = $("input[name='report_type']:checked").val();
+
+        let queryParams = $.param({
+            category: category,
+            report_type: reportType,
+            start_date: startDate,
+            end_date: endDate,
+            page: currentPage,
+            transaction_type: transactionType,
+        });
+        showLoader();
+        activeRequests++;
+        window.location.href = "{% url 'analytics:export_repeat_trans_details' %}?" + queryParams;
+        hide();
+      });
+
+      $(document).ready(function() {
+          console.log("AJAX CALL IS MADE")
+          fetchTotalsData();
+      });
+    </script>
+{% include "footer.html" %}

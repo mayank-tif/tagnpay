@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+      name="viewport"
+    />
+    <title>
+      Form Validation | Bootstrap Based Admin Template - Material Design
+    </title>
+    <!-- Favicon-->
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
+    <!-- Bootstrap Core Css -->
+    <link href="../../plugins/bootstrap/css/bootstrap.css" rel="stylesheet" />
+
+    <!-- Waves Effect Css -->
+    <link href="../../plugins/node-waves/waves.css" rel="stylesheet" />
+
+    <!-- Animation Css -->
+    <link href="../../plugins/animate-css/animate.css" rel="stylesheet" />
+
+    <!-- Sweet Alert Css -->
+    <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+
+    <!-- Custom Css -->
+    <link href="../../css/style.css" rel="stylesheet" />
+
+    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link href="../../css/themes/all-themes.css" rel="stylesheet" />
+
+    <style>
+      .form-container {
+        margin-top: 20px;
+      }
+      .form-actions {
+        margin: 20px 0px 20px 00px;
+      }
+
+      .form-actions btn {
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+
+  <body class="theme-red">
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+      <div class="loader">
+        <div class="preloader">
+          <div class="spinner-layer pl-red">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+        <p>Please wait...</p>
+      </div>
+    </div>
+    <!-- #END# Page Loader -->
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <div class="search-icon">
+        <i class="material-icons">search</i>
+      </div>
+      <input type="text" placeholder="START TYPING..." />
+      <div class="close-search">
+        <i class="material-icons">close</i>
+      </div>
+    </div>
+    <!-- #END# Search Bar -->
+   <!-- Top Bar -->
+   <nav class="navbar">
+    <div class="container-fluid">
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+       <div class="navbar-header">
+        <a
+          href="javascript:void(0);"
+          class="navbar-toggle collapsed"
+          data-toggle="collapse"
+          data-target="#navbar-collapse"
+          aria-expanded="false"
+        ></a>
+        <a href="javascript:void(0);" class="bars"></a>
+        <div class="logo">
+          <img src="../../images/logo-fundle.png" alt="" height="30px" />
+        </div>
+      </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <div class="navbar-header-right">
+         <a
+           href="javascript:void(0);"
+           class="navbar-toggle collapsed"
+           data-toggle="collapse"
+           data-target="#navbar-collapse"
+           aria-expanded="false"
+         ></a>
+         <a href="javascript:void(0);" class="bars"></a>
+         <div class="logo">
+           <img src="../../images/brandlogoo.png" alt="" height="30px" />
+         </div>
+       </div>
+       </div>
+    </div>
+  </nav>
+  <!-- #Top Bar -->
+  <section>
+    <!-- Left Sidebar -->
+    <aside id="leftsidebar" class="sidebar">
+      <!-- User Info -->
+      <div class="user-info">
+        <div class="image">
+          <img
+            src="../../images/user.png"
+            width="48"
+            height="48"
+            alt="User"
+          />
+        </div>
+        <div class="info-container">
+          <div
+            class="name"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            John Doe
+          </div>
+          <div class="email">john.doe@example.com</div>
+          <div class="btn-group user-helper-dropdown">
+            <i
+              class="material-icons"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="true"
+              >keyboard_arrow_down</i
+            >
+            <ul class="dropdown-menu pull-right">
+              <li>
+                <a href="javascript:void(0);"
+                  ><i class="material-icons">person</i>Profile</a
+                >
+              </li>
+              <li role="separator" class="divider"></li>
+
+              <li>
+                <a href="javascript:void(0);"
+                  ><i class="material-icons">input</i>Sign Out</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- #User Info -->
+      <!-- Menu -->
+      <div class="menu">
+        <ul class="list">
+          <li class="header">MAIN NAVIGATION</li>
+          <li>
+            <a href="../../dashboard.html">
+              <i class="material-icons">home</i>
+              <span>Home</span>
+            </a>
+          </li>
+            <li >
+              <a href="javascript:void(0);" class="menu-toggle">
+                <i class="material-icons">widgets</i>
+                <span>Rewards Desk</span>
+              </a>
+              <ul class="ml-menu">
+                <li>
+                  <a href="/pages/forms/registration-form.html">Registration</a>
+                </li>
+                <li >
+                  <a href="enter-bill.html">Enter Bill</a>
+                </li>
+                <li>
+                  <a href="voucher-insurance.html">Voucher Insurance</a>
+                </li>
+                <li>
+                  <a href="brand-search.html">Brand Search</a>
+                </li>
+                <li>
+                  <a href="pages/forms/customer-search.html">Customer Search</a>
+                </li>
+                <li>
+                  <a href="customer-details.html">View Customer Details</a>
+                </li>
+              </ul>
+            </li>
+
+            <li>
+              <a href="javascript:void(0);" class="menu-toggle">
+                <i class="material-icons">widgets</i>
+                <span>Analytics</span>
+              </a>
+              <ul class="ml-menu">
+                <li>
+                  <a href="pages/widgets/cards/basic.html">Pending bills</a>
+                </li>
+                <li>
+                  <a href="analytics-stock-report.html"
+                    >Rewards Desk Stock Report</a
+                  >
+                </li>
+                <li>
+                  <a href="analytics-customer-details.html">Customer details</a>
+                </li>
+                <li>
+                  <a href="analytics-voucher-insurance-report.html"
+                    >Voucher Insurance report</a
+                  >
+                </li>
+                <li>
+                  <a href="analytics-transaction-report.html"
+                    >Transaction Report</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+             <li>
+              <a href="javascript:void(0);" class="menu-toggle">
+                <i class="material-icons">widgets</i>
+                <span>Config Settings</span>
+              </a>
+              <ul class="ml-menu">
+                
+               
+                    <li>
+                      <a href="logic-configuration.html">Logic configuration</a>
+                    </li>
+                    <li>
+                      <a href="data-uploads.html">Data uploads</a>
+                    </li>
+              
+                </li>
+              </ul>
+            </li>
+
+            <li class="active">
+              <a href="javascript:void(0);" class="menu-toggle">
+                <i class="material-icons">widgets</i>
+                <span>Support Desk</span>
+              </a>
+              <ul class="ml-menu">
+                
+                    <li class="active">
+                      <a href="supportdesk-uploadcategory.html"
+                        >Upload Category</a
+                      >
+                    </li>
+                    <li>
+                      <a href="supportdesk-uploadbrand.html">Upload Brand</a>
+                    </li>
+                    <li>
+                      <a href="supportdesk-importvouchers.html"
+                        >Import Vouchers</a
+                      >
+                    </li>
+                    <li>
+                      <a href="supportdesk-vouchermaster.html">Import Stock</a>
+                    </li>
+                    <li>
+                      <a href="supportdesk-expiry-extendvouchers.html"
+                        >Issue Rewards desk stock</a
+                      >
+                    </li>
+                    <li>
+                      <a href="supportdesk-expiry-extendvouchers.html"
+                        >Extend Expiry vouchers</a
+                      >
+                    </li>
+                    <li>
+                      <a href="supportdesk-updatebill.html">Update bill</a>
+                    </li>
+             
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <!-- #Menu -->
+        <!-- Footer -->
+        <div class="legal">
+          <div class="copyright">
+            &copy; 2016 - 2017
+            <a href="javascript:void(0);">Fundle mall Loyalty Program.</a>.
+          </div>
+          <div class="version"><b>Version: </b> 1.0.5</div>
+        </div>
+        <!-- #Footer -->
+      </aside>
+      <!-- #END# Left Sidebar -->
+    </section>
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Basic Validation -->
+        <div class="row clearfix" id="form_container" style="display: none">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+              <div class="header">
+                <h2>Upload Category</h2>
+              </div>
+              <div class="body">
+                <form id="form_validation" method="POST">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="category_name"
+                            required
+                          />
+                          <label class="form-label">Category Name</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="category_description"
+                            required
+                          />
+                          <label class="form-label">Category Description</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group form-float">
+                        <div class="form-line">
+                          <input
+                            type="file"
+                            class="form-control"
+                            name="category_image"
+                            id="category_image"
+                            required
+                          />
+                        </div>
+                        <img
+                          id="image_preview"
+                          src=""
+                          alt="Category Image Preview"
+                          style="
+                            display: none;
+                            margin-top: 10px;
+                            max-height: 200px;
+                          "
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <button class="btn btn-primary waves-effect" type="submit">
+                    SUBMIT
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category Table -->
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+              <div class="header">
+                <h2>Category List</h2>
+                <button
+                  class="btn btn-primary waves-effect"
+                  type="button"
+                  style="float: right; margin-left: 10px"
+                  onclick="toggleForm()"
+                >
+                  Add Grid
+                </button>
+                <button
+                  class="btn btn-secondary waves-effect"
+                  type="button"
+                  style="float: right"
+                  onclick="document.getElementById('import_files').click()"
+                >
+                  Import Files
+                </button>
+                <input
+                  type="file"
+                  id="import_files"
+                  style="display: none"
+                  accept=".csv, .xlsx"
+                  onchange="handleFileUpload(event)"
+                />
+              </div>
+              <div class="body">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th>Category Name</th>
+                        <th>Category Description</th>
+                        <th>Category Image</th>
+                        <th>Edit</th>
+                        <th>Deactivate</th>
+                      </tr>
+                    </thead>
+                    <tbody id="categoryTableBody">
+                      <!-- Dynamic rows will be appended here by JavaScript -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      function toggleForm() {
+        const formContainer = document.getElementById("form_container");
+        if (formContainer.style.display === "none") {
+          formContainer.style.display = "block";
+        } else {
+          formContainer.style.display = "none";
+        }
+      }
+
+      document
+        .getElementById("category_image")
+        .addEventListener("change", function (event) {
+          const imagePreview = document.getElementById("image_preview");
+          const file = event.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              imagePreview.src = e.target.result;
+              imagePreview.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+          } else {
+            imagePreview.src = "";
+            imagePreview.style.display = "none";
+          }
+        });
+
+      function handleFileUpload(event) {
+        const file = event.target.files[0];
+        if (file) {
+          // Implement file processing here
+          console.log("Selected file:", file.name);
+        }
+      }
+    </script>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="categoryModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="categoryModalLabel"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="categoryModalLabel">
+              Edit/View Category
+            </h4>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Form content from above -->
+            <form id="modal_form_validation" method="POST">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group form-float">
+                    <div class="form-line">
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="modal_category_name"
+                        required
+                      />
+                      <label class="form-label">Category Name</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group form-float">
+                    <div class="form-line">
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="modal_category_description"
+                        required
+                      />
+                      <label class="form-label">Category Description</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group form-float">
+                    <div class="form-line">
+                      <input
+                        type="file"
+                        class="form-control"
+                        name="modal_category_image"
+                        id="modal_category_image"
+                        required
+                      />
+                    </div>
+                    <img
+                      id="modal_image_preview"
+                      src=""
+                      alt="Category Image Preview"
+                      style="display: none; margin-top: 10px; max-height: 200px"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions"></div>
+
+              <button class="btn btn-primary waves-effect" type="submit">
+                SUBMIT
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Example data for the table
+      const categories = [
+        {
+          name: "Category 1",
+          description: "Description 1",
+          image: "image1.jpg",
+        },
+        {
+          name: "Category 2",
+          description: "Description 2",
+          image: "image2.jpg",
+        },
+      ];
+
+      // Function to populate the category table
+      function populateCategoryTable() {
+        const tableBody = document.getElementById("categoryTableBody");
+        tableBody.innerHTML = "";
+
+        categories.forEach((category, index) => {
+          const row = document.createElement("tr");
+
+          row.innerHTML = `
+        <td>${category.name}</td>
+        <td>${category.description}</td>
+        <td><img src="${category.image}" alt="${category.name}" style="max-height: 100px;"></td>
+        <td>
+  <button type="button" class="btn btn-primary" onclick="openModal(${index}, 'edit')">
+    <i class="fas fa-edit fa-xs"></i>
+  </button>
+</td>
+<td>
+  <button type="button" class="btn btn-danger" onclick="deleteCategory(${index})">
+    <i class="fas fa-trash-alt fa-xs"></i>
+  </button>
+</td>
+
+
+
+      `;
+
+          tableBody.appendChild(row);
+        });
+      }
+
+      // Function to open the modal with category details
+      function openModal(index, mode) {
+        const category = categories[index];
+
+        document.querySelector('[name="modal_category_name"]').value =
+          category.name;
+        document.querySelector('[name="modal_category_description"]').value =
+          category.description;
+        document.getElementById("modal_image_preview").src = category.image;
+        document.getElementById("modal_image_preview").style.display = "block";
+
+        if (mode === "view") {
+          document.querySelector(
+            '[name="modal_category_name"]'
+          ).readOnly = true;
+          document.querySelector(
+            '[name="modal_category_description"]'
+          ).readOnly = true;
+          document.querySelector(
+            '[name="modal_category_image"]'
+          ).style.display = "none";
+          document.querySelector(".form-actions").style.display = "none";
+        } else {
+          document.querySelector(
+            '[name="modal_category_name"]'
+          ).readOnly = false;
+          document.querySelector(
+            '[name="modal_category_description"]'
+          ).readOnly = false;
+          document.querySelector(
+            '[name="modal_category_image"]'
+          ).style.display = "block";
+          document.querySelector(".form-actions").style.display = "block";
+        }
+
+        $("#categoryModal").modal("show");
+      }
+
+      // Function to delete a category
+      function deleteCategory(index) {
+        categories.splice(index, 1);
+        populateCategoryTable();
+      }
+
+      // Call the function to populate the table on page load
+      populateCategoryTable();
+    </script>
+
+    <!-- Jquery Core Js -->
+    <script src="../../plugins/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core Js -->
+    <script src="../../plugins/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Select Plugin Js -->
+    <script src="../../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+    <!-- Slimscroll Plugin Js -->
+    <script src="../../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+    <!-- Jquery Validation Plugin Css -->
+    <script src="../../plugins/jquery-validation/jquery.validate.js"></script>
+
+    <!-- JQuery Steps Plugin Js -->
+    <script src="../../plugins/jquery-steps/jquery.steps.js"></script>
+
+    <!-- Sweet Alert Plugin Js -->
+    <script src="../../plugins/sweetalert/sweetalert.min.js"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="../../plugins/node-waves/waves.js"></script>
+
+    <!-- Custom Js -->
+    <script src="../../js/admin.js"></script>
+    <script src="../../js/pages/forms/form-validation.js"></script>
+
+    <!-- Demo Js -->
+    <script src="../../js/demo.js"></script>
+  </body>
+</html>

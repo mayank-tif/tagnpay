@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In | Tag'N'Pay</title>
+    <link rel="icon" href="static/images/favicon.ico" type="image/x-icon" />
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="static/images/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="static/images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="static/images/favicon-16x16.png"
+    />
+    <link rel="manifest" href="static/images/site.webmanifest" />
+    <link
+      rel="mask-icon"
+      href="static/images/safari-pinned-tab.svg"
+      color="#5bbad5"
+    />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <style>
+      {% comment %} body,
+      html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #efefee;
+      } {% endcomment %}
+      body, html {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        display: flex
+    ;
+        align-items: center;
+        justify-content: center;
+        background: url(static/images/Final-bg.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+      .container {
+        background: #fff;
+        width: 90%;
+        height: 60%;
+        display: flex;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      .left-part,
+      .right-part {
+        width: 70%;
+        box-sizing: border-box;
+      }
+      .left-part {
+        background: #fff;
+        padding: 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-right: 2px solid #f1f1f1;
+      }
+      .left-part img {
+        width: 100px;
+        margin-bottom: 12px;
+      }
+      .form-group input {
+        width: 400px;
+        height: 44px;
+      }
+      .btn {
+        width: 400px;
+        height: 44px;
+        margin-top: 10px;
+      }
+      .signup-link {
+        margin-top: 20px;
+        font-size: 14px;
+      }
+      .signup-link a {
+        color: #aa78ff;
+        text-decoration: none;
+      }
+      .signup-link a:hover {
+        text-decoration: underline;
+      }
+      .carousel-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .carousel-item img {
+        width: 100%;
+        height: 50%;
+        object-fit: cover;
+      }
+      .carousel-caption {
+        position: relative;
+        padding: 20px;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        width: 100%;
+      }
+      .image1 {
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+      }
+      .image2 {
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+      }
+      .text1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 8px;
+      }
+      .text2 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 8px;
+      }
+
+      .slider {
+        position: relative;
+        width: 100%;
+        margin: auto;
+        overflow: hidden;
+      }
+
+      .slides {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+      }
+
+      .slide {
+        min-width: 100%;
+        box-sizing: border-box;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .image img {
+        width: 100%;
+        height: auto;
+      }
+
+      .text {
+        margin: 10px 0;
+      }
+
+      .para {
+        font-size: 14px;
+      }
+
+      .prev,
+      .next {
+        position: absolute;
+        top: 50%;
+        width: auto;
+        padding: 16px;
+        margin-top: -22px;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+        background-color: rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+        border-radius: 3px;
+        user-select: none;
+      }
+
+      .prev {
+        left: 0;
+      }
+
+      .next {
+        right: 0;
+      }
+
+      .error-message {
+        color: red;
+        font-size: 14px;
+        margin-top: 10px;
+      }
+      .btn-primary,
+      .btn-primary:hover,
+      .btn-primary:active,
+      .btn-primary:focus {
+        background-color: #AA78ff !important;
+        border-color: #AA78ff !important;
+        box-shadow: none  !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <!-- Left part: Login form -->
+        <div class="col-12 col-md-6 left-part">
+          <img
+            src="static/images/tag.png"
+            alt="Logo"
+            class="img-fluid mb-3"
+          />
+          <h3>Sign in to Tag'n'Pay Home</h3>
+          <div class="form-container">
+            <form id="signin_form" name="signin_form" method="post">
+              {% csrf_token %}
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  name="username"
+                  placeholder="Username"
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password" name="password"
+                  password="password"
+                  placeholder="Password"
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+              <div class="error-message" id="error_message" style="display: none">
+                Wrong Username or Password
+              </div>
+              <div class="error-message" id="error_message1" style="display: block">
+                {{message}}
+              </div>
+              {% if msg == "expired" %}
+              <div class="error-message" id="error_message1" style="display: block">
+                Session expired!!
+              </div>
+              {% endif %}
+            </form>
+          </div>
+          <!--<div class="signup-link">
+            <a href="pages/forms/forgot-password.html">Forgot Password?</a>
+          </div>-->
+        </div>
+
+        <!-- Right part: Slider/Info -->
+        <div class="col-12 col-md-6 right-part" style="background-color: white">
+          <div class="slider">
+            <div class="slides">
+              <div class="slide active">
+                <div class="image">
+                  
+                  <img
+                    src="static/images/tagnpay_dark.png"
+                    alt="Slide 2"
+                    class="img-fluid"
+                  />
+                </div>
+                <div class="text">
+                  <h4>Tag'n'Pay Loyalty</h4>
+                </div>
+                <div class="para">
+                  <span>
+                    End-to-end customer engagement from one powerful dashboard with strong analytics.
+                  </span>
+                </div>  
+              </div>
+              <div class="slide">
+                <div class="image">
+                  <img
+                    src="static/images/tagnpay-image1.jpg"
+                    alt="Slide 1"
+                    class="img-fluid"
+                  />
+                </div>
+                <div class="text">
+                  <h4>Data Analysis</h4>
+                </div>
+                <div class="para">
+                  <span>
+                    Useful insights to get access to the view on your loyalty customers, 
+                    loyalty purchases, repeat sales, member contribution to business & earn / burn analysis.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/JavaScript">
+      document
+       .getElementById("signin_form")
+       .addEventListener("submit", function (event) {
+          // Prevent form from submitting normally
+
+         // Dummy validation logic (replace with actual validation)
+         const username = document.getElementById("username").value;
+         const password = document.getElementById("password").value;
+         const errorMessage = document.getElementById("error_message");
+         const errorMessage1 = document.getElementById("error_message1");
+
+          /* if (email === "user@example.com" && password === "password") {
+           window.location.href = "dashboard.html"; // Redirect on success
+         } else {
+           errorMessage.style.display = "block"; // Show error message
+         }  */
+         if (username === "" || password === "") {
+           event.preventDefault();
+           errorMessage.style.display = "block"; // Show error message
+           errorMessage1.style.display = "none";
+         }  /* else {
+           window.location.href = "dashboard.html"; // Redirect on success
+         }  */
+
+       }); 
+
+/*         function validate()
+       {
+         alert("Hiiiii");
+         username = document.signin_form.getElementById("username").value;
+         password = document.signin_form.getElementById("password").value;
+         errorMessage = document.signin_form.getElementById("error_message");
+         alert(username);
+         if ((username == "") || (password == "")) 
+         {
+           alert("Hellooo");
+           errorMessage.style.display = "block";
+           return false;
+         }
+         return true;
+       } */
+
+     let currentSlide = 0;
+
+     function showSlide(index) {
+       const slides = document.querySelectorAll(".slide");
+       if (index >= slides.length) {
+         currentSlide = 0;
+       } else if (index < 0) {
+         currentSlide = slides.length - 1;
+       } else {
+         currentSlide = index;
+       }
+       const newTransform = -currentSlide * 100 + "%";
+       document.querySelector(
+         ".slides"
+       ).style.transform = `translateX(${newTransform})`;
+     }
+
+     function nextSlide() {
+       showSlide(currentSlide + 1);
+     }
+
+     function prevSlide() {
+       showSlide(currentSlide - 1);
+     }
+
+     // Optional: Automatically change slide every 5 seconds
+     setInterval(nextSlide, 5000);
+   </script>
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ </body>
+</html>
